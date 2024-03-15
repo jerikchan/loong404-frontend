@@ -104,24 +104,26 @@ export function Chat() {
       setInputDisabled(true);
       return;
     }
-    if (!loading) {
-      if (myNTFs.greatLoong === 0 && myNTFs.babyLoong === 0) {
-        setHelloMessage('在进行对话前，请确保你已经拥有神龙NFT。')
+    if (loading) {
+      return;
+    }
+    console.log('great loong remain:', myNTFs.greatLoong, 'baby loong remain:', myNTFs.babyLoong, 'usage count:', usageCount);
+    
+    if (myNTFs.greatLoong === 0 && myNTFs.babyLoong === 0) {
+      setHelloMessage('在进行对话前，请确保你已经拥有神龙NFT。')
+      setInputDisabled(true);
+      return;
+    }
+    if (myNTFs.greatLoong === 0 && myNTFs.babyLoong > 0) {
+      if (usageCount >= myNTFs.babyLoong) {
+        setHelloMessage('本月的算命机会你已经用完了。请下个月再来试试吧！')
         setInputDisabled(true);
         return;
-      }
-      if (myNTFs.greatLoong === 0 && myNTFs.babyLoong > 0) {
-        if (usageCount >= myNTFs.babyLoong) {
-          setHelloMessage('本月的算命机会你已经用完了。请下个月再来试试吧！')
-          setInputDisabled(true);
-          return;
-        }
       }
     }
 
     setHelloMessage(defaultHelloMessage)
     setInputDisabled(false);
-    console.log('great loong remain:', myNTFs.greatLoong, 'baby loong remain:', myNTFs.babyLoong, 'usage count:', usageCount);
   }, [canRequestWallet, myNTFs, usageCount, loading]);
 
   // 获取 NFT
@@ -162,7 +164,7 @@ export function Chat() {
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
-        paddingTop: "90px",
+        paddingTop: "100px",
         width: "100vw",
         height: "100vh",
       }}
