@@ -25,6 +25,7 @@ import { mint, freeMint as freeMintWeb3 } from "@/utils/web3";
 import { addCommasToNumber, getInitMintInfo, getPercent } from "./utils";
 import Decimal from 'decimal.js';
 import { SearchName } from "@/constant";
+import { set } from "lodash";
 
 // #region Css
 const Layout = styled.div`
@@ -411,8 +412,11 @@ export function MintLayout({ isBaby }: { isBaby: boolean }) {
                 setMinted(res.minted)
                 setPrice(res.price)
                     setMintType(res.isFree ? MINT_TYPE_FREE : MINT_TYPE_NORMAL)
-                    setLimitMint(singleMintMax - Number(res.nftIds.length))
-                    setCount(singleMintMax - Number(res.nftIds.length));
+                    // setLimitMint(singleMintMax - Number(res.nftIds.length))
+                    // setCount(singleMintMax - Number(res.nftIds.length));
+                    const limitMintMax = singleMintMax - res.limitMember;
+                    setLimitMint(limitMintMax)
+                    setCount(limitMintMax);
                 }).catch(e => {
                     setMintType(MINT_TYPE_NORMAL)
                 })
