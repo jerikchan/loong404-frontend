@@ -25,7 +25,6 @@ import { mint, freeMint as freeMintWeb3 } from "@/utils/web3";
 import { addCommasToNumber, getInitMintInfo, getPercent } from "./utils";
 import Decimal from 'decimal.js';
 import { SearchName } from "@/constant";
-import { set } from "lodash";
 
 // #region Css
 const Layout = styled.div`
