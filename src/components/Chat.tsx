@@ -57,12 +57,14 @@ export function Chat() {
     const response = await fetch(`/chat/api/usage?address=${address}&month=${month}`, {
       method: "GET",
     });
-    const result: UsageResult = await response.json();
+    const result: UsageResult | null = await response.json();
 
-    if (result?.data?.count === undefined) {
+    if (result?.data === null) {
+      setUsageCount(0);
+    } else if (result?.data?.count !== undefined) {
       setUsageCount(result.data.count);
     } else {
-      console.error(result.msg);
+      console.error(result?.msg || '获取使用次数失败');
     }
   }
 
@@ -102,18 +104,21 @@ export function Chat() {
       setInputDisabled(true);
       return;
     }
-    if (!loading) {
-      if (myNTFs.greatLoong === 0 && myNTFs.babyLoong === 0) {
-        setHelloMessage('在进行对话前，请确保你已经拥有神龙NFT。')
+    if (loading) {
+      return;
+    }
+    console.log('great loong remain:', myNTFs.greatLoong, 'baby loong remain:', myNTFs.babyLoong, 'usage count:', usageCount);
+    
+    if (myNTFs.greatLoong === 0 && myNTFs.babyLoong === 0) {
+      setHelloMessage('在进行对话前，请确保你已经拥有神龙NFT。')
+      setInputDisabled(true);
+      return;
+    }
+    if (myNTFs.greatLoong === 0 && myNTFs.babyLoong > 0) {
+      if (usageCount >= myNTFs.babyLoong) {
+        setHelloMessage('本月的算命机会你已经用完了。请下个月再来试试吧！')
         setInputDisabled(true);
         return;
-      }
-      if (myNTFs.greatLoong === 0 && myNTFs.babyLoong > 0) {
-        if (usageCount >= myNTFs.babyLoong) {
-          setHelloMessage('本月的算命机会你已经用完了。请下个月再来试试吧！')
-          setInputDisabled(true);
-          return;
-        }
       }
     }
 
@@ -159,7 +164,7 @@ export function Chat() {
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
-        paddingTop: "90px",
+        paddingTop: "100px",
         width: "100vw",
         height: "100vh",
       }}

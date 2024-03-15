@@ -411,8 +411,11 @@ export function MintLayout({ isBaby }: { isBaby: boolean }) {
                 setMinted(res.minted)
                 setPrice(res.price)
                     setMintType(res.isFree ? MINT_TYPE_FREE : MINT_TYPE_NORMAL)
-                    setLimitMint(singleMintMax - Number(res.nftIds.length))
-                    setCount(singleMintMax - Number(res.nftIds.length));
+                    // setLimitMint(singleMintMax - Number(res.nftIds.length))
+                    // setCount(singleMintMax - Number(res.nftIds.length));
+                    const limitMintMax = singleMintMax - res.limitMember;
+                    setLimitMint(limitMintMax)
+                    setCount(limitMintMax);
                 }).catch(e => {
                     setMintType(MINT_TYPE_NORMAL)
                 })

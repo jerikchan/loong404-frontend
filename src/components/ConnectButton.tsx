@@ -121,6 +121,8 @@ const AssetsBox = styled.div`
         color: #979797;
         margin: 0;
         line-height: 1;
+        width: 100%;
+        word-break: break-all;
     }
     .copy {
         margin-left: 4px;
