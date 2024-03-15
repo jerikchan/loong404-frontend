@@ -23,6 +23,7 @@ import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
 import { mint, freeMint as freeMintWeb3 } from "@/utils/web3";
 import { addCommasToNumber, getInitMintInfo, getPercent } from "./utils";
+import { getTotalMinted } from "@/utils/web3";
 import Decimal from 'decimal.js';
 import { SearchName } from "@/constant";
 
@@ -297,6 +298,7 @@ export function MintLayout({ isBaby }: { isBaby: boolean }) {
     const totalMint = isBaby ? 3000 : 300;
     const { address, chainId, isConnected } = useWeb3ModalAccount()
     const { walletProvider } = useWeb3ModalProvider()
+
     const [count, setCount] = useState(0)
     const navigate = useRouter().push
     const searchParams = useSearchParams();
@@ -404,12 +406,12 @@ export function MintLayout({ isBaby }: { isBaby: boolean }) {
         }
     }
 
+    // 需要登录
     useEffect(() => {
         if (address) {
             getInitMintInfo(walletProvider, !isBaby)
             .then(res => {
-                setMinted(res.minted)
-                setPrice(res.price)
+                    setPrice(res.price)
                     setMintType(res.isFree ? MINT_TYPE_FREE : MINT_TYPE_NORMAL)
                     // setLimitMint(singleMintMax - Number(res.nftIds.length))
                     // setCount(singleMintMax - Number(res.nftIds.length));
@@ -423,6 +425,14 @@ export function MintLayout({ isBaby }: { isBaby: boolean }) {
             setMintType(MINT_TYPE_CONNECT)
         }
     }, [address, chainId, refresh])
+
+    // 不需要登录
+    useEffect(() => {
+        getTotalMinted(!isBaby)
+            .then(minted => {
+                setMinted(minted)
+            })
+    }, [chainId, refresh])
 
     const percent = getPercent(minted, total)
     const allMoney = new Decimal(price || "0").mul(new Decimal(count.toString())).toString()
