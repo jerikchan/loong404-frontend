@@ -1,18 +1,14 @@
-import { getTotalMinted, getPrice, checkFreeMint, getNftIds, getLimitMemberMint } from "../utils/web3"
+import { getPrice, checkFreeMint, getLimitMemberMint } from "../utils/web3"
 
 export const getInitMintInfo = async (walletProvider: any, isGreatL: boolean) => {
-  const [minted, price, isFree, nftIds, limitMember] = await Promise.all([
-    getTotalMinted(walletProvider, isGreatL),
+  const [price, isFree, limitMember] = await Promise.all([
     getPrice(walletProvider, isGreatL),
     checkFreeMint(walletProvider, isGreatL),
-    getNftIds(walletProvider, isGreatL),
     getLimitMemberMint(walletProvider, isGreatL)
   ])
   return {
-    minted,
     price,
     isFree,
-    nftIds,
     limitMember,
   }
 }

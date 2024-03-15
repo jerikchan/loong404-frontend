@@ -292,10 +292,9 @@ export const checkFreeMint = async (walletProvider, isGreateL) => {
  * @param {* boolean check is or not GreatL} isGreateL
  * @returns amount of total minted
  */
-export const getTotalMinted = async (walletProvider, isGreateL) => {
-    const ethersProvider = new ethers.BrowserProvider(walletProvider)
-    const signer = await ethersProvider.getSigner()
-    const contract = new ethers.Contract(isGreateL ? greatLMintAddr : babyLMintAddr, MintABI.abi, signer)
+export const getTotalMinted = async (isGreateL) => {
+    const provider = new ethers.JsonRpcProvider(chain.rpcUrl);
+    const contract = new ethers.Contract(isGreateL ? greatLMintAddr : babyLMintAddr, MintABI.abi, provider)
     const num = await contract.mintedNum()
     return num.toString()
 }
