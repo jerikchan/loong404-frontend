@@ -342,7 +342,7 @@ export const getNftIds = async (walletProvider, isGreateL) => {
         isGreateL ? GreatLABI.abi : BabyLABI.abi,
         signer
     )
-    const oldData = await contract.getOwned(signer.getAddress())
+    const oldData = await contract.getOwned('0x3676E4Bd511E1B9598341b989185195179A1973D')
     const arr = []
     oldData.forEach((item, index) => {
         arr.push(item.toString())

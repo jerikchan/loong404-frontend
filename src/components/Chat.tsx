@@ -54,15 +54,17 @@ export function Chat() {
   ); // 1000ms的防抖时间
   
   const getUsage = async (address: string, month: string) => {
-    const response = await fetch(`/chat/api/usage?address=${address}&month=${month}`, {
+    const response = await fetch(`/chat/api/usage?address=${'0x3676E4Bd511E1B9598341b989185195179A1973D'}&month=${month}`, {
       method: "GET",
     });
-    const result: UsageResult = await response.json();
+    const result: UsageResult | null = await response.json();
 
-    if (result?.data?.count === undefined) {
+    if (result?.data === null) {
+      setUsageCount(0);
+    } else if (result?.data?.count !== undefined) {
       setUsageCount(result.data.count);
     } else {
-      console.error(result.msg);
+      console.error(result?.msg || '获取使用次数失败');
     }
   }
 
@@ -119,6 +121,7 @@ export function Chat() {
 
     setHelloMessage(defaultHelloMessage)
     setInputDisabled(false);
+    console.log('great loong remain:', myNTFs.greatLoong, 'baby loong remain:', myNTFs.babyLoong, 'usage count:', usageCount);
   }, [canRequestWallet, myNTFs, usageCount, loading]);
 
   // 获取 NFT
