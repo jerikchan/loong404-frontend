@@ -54,7 +54,7 @@ export function Chat() {
   ); // 1000ms的防抖时间
   
   const getUsage = async (address: string, month: string) => {
-    const response = await fetch(`/chat/api/usage?address=${'0x3676E4Bd511E1B9598341b989185195179A1973D'}&month=${month}`, {
+    const response = await fetch(`/chat/api/usage?address=${address}&month=${month}`, {
       method: "GET",
     });
     const result: UsageResult | null = await response.json();
