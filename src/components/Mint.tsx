@@ -11,6 +11,7 @@ import { useWeb3Modal, useWeb3ModalAccount } from '@web3modal/ethers/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers/react';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Loading from '@/components/loading';
@@ -26,6 +27,7 @@ import { addCommasToNumber, getInitMintInfo, getPercent } from './utils';
 import { getTotalMinted } from '@/utils/web3';
 import Decimal from 'decimal.js';
 import { SearchName } from '@/constant';
+import { Header } from './Header';
 
 // #region Css
 const Layout = styled.div`
@@ -50,10 +52,6 @@ const FirstLine = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 126px;
-  img {
-    height: 23px;
-    cursor: pointer;
-  }
   @media (max-width: 1100px) {
     height: 80px;
   }
@@ -448,24 +446,16 @@ export function MintLayout({ isBaby }: { isBaby: boolean }) {
       {contextHolder}
       <MainBox>
         <FirstLine>
-          <LogoBox onClick={() => toGo('/')}>
-            <img src={LogoMint.src} alt='' />
-            {/*AILOONG*/}
-          </LogoBox>
-          {/*<img src={Logo} alt="" onClick={()=>toGo("/")}/>*/}
-          <ConnectButton />
+          <Header dark={true} />
         </FirstLine>
         <BtmBox>
           <LftBox>
             <TitleBox>
-              <TitleItem
-                $isActive={!isBaby}
-                onClick={() => toGo('/mint/great')}
-              >
-                Great Loong
+              <TitleItem $isActive={!isBaby}>
+                <Link href='/mint/great'>Great Loong</Link>
               </TitleItem>
-              <TitleItem $isActive={isBaby} onClick={() => toGo('/mint/baby')}>
-                Baby Loong
+              <TitleItem $isActive={isBaby}>
+                <Link href='/mint/baby'>Baby Loong</Link>
               </TitleItem>
             </TitleBox>
             <ProBox width={percent}>

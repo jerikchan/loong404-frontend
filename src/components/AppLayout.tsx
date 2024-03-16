@@ -8,6 +8,7 @@ import { createWeb3Modal, defaultConfig } from '@web3modal/ethers/react';
 import { ConfigProvider } from 'antd';
 import { chain } from '@/common/config.js';
 import StyledComponentsRegistry from '@/components/AntdRegistry';
+import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 
 createWeb3Modal({
   ethersConfig: defaultConfig({
@@ -46,8 +47,16 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                       <Route path={Path.MintBaby} element={<MintBaby />} />
                     </Routes>
                 </Router> */}
-              {children}
-              <GlobalStyle />
+              <div id='app'>
+                {children}
+                {/* <GlobalStyle /> */}
+                <ProgressBar
+                  height='4px'
+                  color='#83271c'
+                  options={{ showSpinner: false }}
+                  shallowRouting
+                />
+              </div>
             </Provider>
           </PersistGate>
         </ConfigProvider>

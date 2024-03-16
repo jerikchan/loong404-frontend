@@ -5,6 +5,7 @@ import TokenSwap from '@/components/tokenswap';
 import Loading from '@/components/loading';
 import { useSelector } from 'react-redux';
 import { Header } from './Header';
+import Link from 'next/link';
 
 const BgBox = styled.div`
   width: 100%;
@@ -189,7 +190,9 @@ export function Home() {
                   <span className='center'> 300 Great Loong</span>
                 </div>
               </div>
-              <BtnRht onClick={() => toGo('/mint/great')}>Mint Now</BtnRht>
+              <BtnRht>
+                <Link href={'/mint/great'}>Mint Now</Link>
+              </BtnRht>
             </RhtInner>
           </RhtBox>
           <RhtBox>
@@ -200,7 +203,9 @@ export function Home() {
                   <span className='center'> 3000 Baby Loong</span>
                 </div>
               </div>
-              <BtnRht onClick={() => toGo('/mint/baby')}>Mint Now</BtnRht>
+              <BtnRht>
+                <Link href={'/mint/baby'}>Mint Now</Link>
+              </BtnRht>
             </RhtInner>
           </RhtBox>
           <RhtBox>
@@ -208,7 +213,9 @@ export function Home() {
               <div className='lft'>
                 <div className='top'>Chat with Me</div>
               </div>
-              <BtnRht onClick={() => toGo('/chat')}>Start</BtnRht>
+              <BtnRht>
+                <Link href={'/chat'}>Start</Link>
+              </BtnRht>
             </RhtInner>
           </RhtBox>
         </FloatBox>

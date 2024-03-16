@@ -35,6 +35,7 @@
     "jimp": "^0.22.10",
     "mysql2": "^3.9.2",
     "next": "14.0.4",
+    "next-nprogress-bar": "^2.3.5",
     "openai": "^4.24.7",
     "patch-package": "^8.0.0",
     "pino-pretty": "^10.3.1",

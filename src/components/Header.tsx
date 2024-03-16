@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import Link from 'next/link';
+import Image from 'next/image';
 import ConnectButton from '@/components/ConnectButton';
 import HomeLogo from '@/assets/logoHome.png';
+import LogoMint from '@/assets/logoMint.png';
 
 const LogoBox = styled.div`
   position: absolute;
@@ -19,8 +21,10 @@ const LogoBox = styled.div`
   height: 40px;
   font-size: 23px;
   border-radius: 10px;
+  a,
   img {
     width: 100%;
+    height: 100%;
   }
   @media (max-width: 1100px) {
     left: 5vw;
@@ -40,12 +44,17 @@ const ConnectBox = styled.div`
   }
 `;
 
-export function Header() {
+export function Header(props: { dark?: boolean }) {
   return (
     <>
       <LogoBox>
         <Link href='/'>
-          <img src={HomeLogo.src} alt='logo' />
+          <Image
+            width={200}
+            height={40}
+            src={props.dark ? LogoMint.src : HomeLogo.src}
+            alt='logo'
+          />
         </Link>
       </LogoBox>
       <ConnectBox>
