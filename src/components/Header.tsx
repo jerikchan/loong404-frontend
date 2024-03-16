@@ -18,7 +18,7 @@ const LogoBox = styled.div`
   align-items: center;
   justify-content: center;
   color: #fff;
-  height: 40px;
+  height: 58px;
   font-size: 23px;
   border-radius: 10px;
   a,
@@ -50,8 +50,8 @@ export function Header(props: { dark?: boolean }) {
       <LogoBox>
         <Link href='/'>
           <Image
-            width={200}
-            height={40}
+            width={734}
+            height={214}
             src={props.dark ? LogoMint.src : HomeLogo.src}
             alt='logo'
           />
