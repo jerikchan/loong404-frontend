@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en' data-test='1'>
+    <html lang='en'>
       <body className={inter.className}>
         <AppLayout>{children}</AppLayout>
       </body>
