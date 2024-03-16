@@ -14,7 +14,9 @@ import {
 } from '@web3modal/ethers/react';
 import { IUsage } from '@/types';
 import { getNftIds } from '@/utils/web3';
-import ProChat from './ProChat';
+
+// import ProChat from './ProChat';
+const ProChat = dynamic(() => import('./ProChat'), { ssr: false });
 
 interface UsageResult {
   msg: string;
