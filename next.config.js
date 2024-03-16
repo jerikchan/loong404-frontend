@@ -11,9 +11,11 @@ const nextConfig = {
     // 定义构建时间
     const buildTime = new Date().toISOString();
     // 使用DefinePlugin插件定义一个全局常量
-    config.plugins.push(new webpack.DefinePlugin({
-      'process.env.BUILD_TIME': JSON.stringify(buildTime),
-    }));
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        'process.env.BUILD_TIME': JSON.stringify(buildTime),
+      })
+    );
 
     return config;
   },

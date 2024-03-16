@@ -1,12 +1,11 @@
-import { AIStream } from "ai";
+import { AIStream } from 'ai';
 
 const API_KEY = 'sk-RnhR7ICa4qLkfARUF9xfjI9ENzoMtDzq3';
 
 // 自定义解析器实现
 const customParser = (data: string) => {
   try {
-    if (data === "[DONE]") {
-
+    if (data === '[DONE]') {
     }
     const text = data;
     try {
@@ -19,7 +18,7 @@ const customParser = (data: string) => {
       };
       return json.choices[0]?.delta?.content;
     } catch (e) {
-      console.error("[Request] parse error", text);
+      console.error('[Request] parse error', text);
     }
   } catch (error) {
     console.error('解析错误', error);
@@ -28,7 +27,10 @@ const customParser = (data: string) => {
 
 // 实现POST处理函数
 export async function POST(request: Request) {
-  const {messages = [], userId}: Partial<{ messages: Array<any>, userId: string }> = await request.json();
+  const {
+    messages = [],
+    userId,
+  }: Partial<{ messages: Array<any>; userId: string }> = await request.json();
 
   const requestPayload = {
     messages,
@@ -37,15 +39,15 @@ export async function POST(request: Request) {
     model: 'gpt-3.5-turbo',
   };
 
-  const chatPath = 'https://ashley.lonic.tech/api/' + "v1/chat/completions";
+  const chatPath = 'https://ashley.lonic.tech/api/' + 'v1/chat/completions';
 
   const response = await fetch(chatPath, {
     method: 'POST',
     body: JSON.stringify(requestPayload),
     headers: {
-      "Content-Type": "application/json",
-      "x-requested-with": "XMLHttpRequest",
-      Accept: "application/json",
+      'Content-Type': 'application/json',
+      'x-requested-with': 'XMLHttpRequest',
+      Accept: 'application/json',
       Authorization: `Bearer ${API_KEY}`,
     },
   });
