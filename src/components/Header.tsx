@@ -1,7 +1,9 @@
-import styled from "styled-components";
-import Link from "next/link";
-import ConnectButton from "@/components/ConnectButton";
-import HomeLogo from "@/assets/logoHome.png";
+import styled from 'styled-components';
+import Link from 'next/link';
+import Image from 'next/image';
+import ConnectButton from '@/components/ConnectButton';
+import HomeLogo from '@/assets/logoHome.png';
+import LogoMint from '@/assets/logoMint.png';
 
 const LogoBox = styled.div`
   position: absolute;
@@ -16,16 +18,20 @@ const LogoBox = styled.div`
   align-items: center;
   justify-content: center;
   color: #fff;
-  height: 40px;
+  height: 58px;
   font-size: 23px;
   border-radius: 10px;
-  img{width: 100%;}
-  @media (max-width: 1100px) {
-      left: 5vw;
-      top: 5vw;
-      width: 145px;
+  a,
+  img {
+    width: 100%;
+    height: 100%;
   }
-`
+  @media (max-width: 1100px) {
+    left: 5vw;
+    top: 5vw;
+    width: 145px;
+  }
+`;
 
 const ConnectBox = styled.div`
   position: absolute;
@@ -33,17 +39,22 @@ const ConnectBox = styled.div`
   top: 40px;
   z-index: 999;
   @media (max-width: 1100px) {
-      right: 5vw;
-      top: 5vw;
+    right: 5vw;
+    top: 5vw;
   }
 `;
 
-export function Header() {
+export function Header(props: { dark?: boolean }) {
   return (
     <>
       <LogoBox>
-        <Link href="/">
-          <img src={HomeLogo.src} alt="logo"/>
+        <Link href='/'>
+          <Image
+            width={734}
+            height={214}
+            src={props.dark ? LogoMint.src : HomeLogo.src}
+            alt='logo'
+          />
         </Link>
       </LogoBox>
       <ConnectBox>

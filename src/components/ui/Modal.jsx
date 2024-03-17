@@ -46,8 +46,8 @@ const ModalHeader = styled.div`
 `;
 
 const ModalTitle = styled.h2`
-   margin: 0;
-   font-weight: 700;
+  margin: 0;
+  font-weight: 700;
 `;
 
 const Modal = ({ isOpen, onClose, children, title }) => {
@@ -57,7 +57,7 @@ const Modal = ({ isOpen, onClose, children, title }) => {
         <ModalHeader>
           <ModalTitle>{title}</ModalTitle>
           <CloseButton onClick={onClose}>
-            <img src={CloseSvg.src} alt="close" />
+            <img src={CloseSvg.src} alt='close' />
           </CloseButton>
         </ModalHeader>
         {children}
