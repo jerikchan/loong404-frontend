@@ -21,6 +21,7 @@
     "@types/howler": "^2.2.11",
     "@types/lodash": "^4.14.202",
     "@types/qrcode": "^1.5.5",
+    "@vercel/analytics": "^1.2.2",
     "@web3modal/ethers": "^4.0.1",
     "ahooks": "^3.7.10",
     "ai": "^2.2.31",

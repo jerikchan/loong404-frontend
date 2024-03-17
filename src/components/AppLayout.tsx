@@ -9,6 +9,7 @@ import { ConfigProvider } from 'antd';
 import { chain } from '@/common/config.js';
 import StyledComponentsRegistry from '@/components/AntdRegistry';
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
+import { Analytics } from '@vercel/analytics/react';
 
 createWeb3Modal({
   ethersConfig: defaultConfig({
@@ -49,13 +50,14 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 </Router> */}
               <div id='app'>
                 {children}
-                {/* <GlobalStyle /> */}
+                <GlobalStyle />
                 <ProgressBar
                   height='4px'
                   color='#83271c'
                   options={{ showSpinner: false }}
                   shallowRouting
                 />
+                <Analytics />
               </div>
             </Provider>
           </PersistGate>
