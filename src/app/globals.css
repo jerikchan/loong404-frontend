@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
@@ -114,10 +118,15 @@ a {
   background: none !important;
 }
 
-.background{
+.background {
   height: 100vh;
   width: 100vw;
-  background: linear-gradient(169.89deg, #A90402 1.23%, #E80B0B 53.91%, #CA0CC2 97.01%);
+  background: linear-gradient(
+    169.89deg,
+    #a90402 1.23%,
+    #e80b0b 53.91%,
+    #ca0cc2 97.01%
+  );
 }
 .ant-pro-chat-input-area-action-bar {
   display: none !important;
