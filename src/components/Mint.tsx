@@ -317,9 +317,10 @@ export function MintLayout({ isBaby }: { isBaby: boolean }) {
     setInviteCode(searchParams.get(SearchName.InviteCode) || '');
   }, [searchParams, pathname]);
 
-  const toGo = (url: string) => {
+  const combineUrl = (url: string) => {
     const code = searchParams.get(SearchName.InviteCode);
-    navigate(code ? `${url}?${SearchName.InviteCode}=${code}` : url);
+    const lastUrl = code ? `${url}?${SearchName.InviteCode}=${code}` : url;
+    return lastUrl;
   };
 
   const onCountChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -452,10 +453,10 @@ export function MintLayout({ isBaby }: { isBaby: boolean }) {
           <LftBox>
             <TitleBox>
               <TitleItem $isActive={!isBaby}>
-                <Link href='/mint/great'>Great Loong</Link>
+                <Link href={combineUrl('/mint/great')}>Great Loong</Link>
               </TitleItem>
               <TitleItem $isActive={isBaby}>
-                <Link href='/mint/baby'>Baby Loong</Link>
+                <Link href={combineUrl('/mint/baby')}>Baby Loong</Link>
               </TitleItem>
             </TitleBox>
             <ProBox width={percent}>

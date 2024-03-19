@@ -29,7 +29,10 @@ const userId = nanoid();
 const defaultHelloMessage =
   '神龙精灵保佑你赚大钱！2024年运气如何？让神秘的东方玄学给你分析一下吧！';
 
-export function Chat() {
+interface ChatProps {
+  freeAccess?: boolean;
+}
+export function Chat(props: ChatProps) {
   useEffect(() => {
     // 1s 后模拟点击html一下
     setTimeout(() => {
@@ -56,16 +59,14 @@ export function Chat() {
   const [helloMessage, setHelloMessage] = useState<string>(defaultHelloMessage);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const navigateDebounced = useCallback(
-    debounce((url) => {
-      router.push(url);
-    }, 1000),
-    []
-  ); // 1000ms的防抖时间
+  const navigateDebounced = debounce((url) => {
+    router.push(url);
+  }, 1000);
+  // 1000ms的防抖时间
 
   const getUsage = async (address: string, month: string) => {
     const response = await fetch(
-      `/chat/api/usage?address=${address}&month=${month}`,
+      `/api/usage?address=${address}&month=${month}`,
       {
         method: 'GET',
       }
@@ -82,7 +83,7 @@ export function Chat() {
   };
 
   const addUsageCount = async (address: string, month: string) => {
-    const response = await fetch(`/chat/api/usage`, {
+    const response = await fetch(`/api/usage`, {
       method: 'POST',
       body: JSON.stringify({
         address,
@@ -95,19 +96,6 @@ export function Chat() {
     } else {
       console.error(result.msg);
     }
-  };
-
-  const assetsInit = async () => {
-    setLoading(true);
-    const [greatLoongNFTRemain, babyLoongNFTRemain] = await Promise.all([
-      getNftIds(walletProvider, true),
-      getNftIds(walletProvider, false),
-    ]);
-    setMyNTFs({
-      babyLoong: babyLoongNFTRemain.length,
-      greatLoong: greatLoongNFTRemain.length,
-    });
-    setLoading(false);
   };
 
   // 提示语
@@ -129,30 +117,45 @@ export function Chat() {
       usageCount
     );
 
-    if (myNTFs.greatLoong === 0 && myNTFs.babyLoong === 0) {
-      setHelloMessage('在进行对话前，请确保你已经拥有神龙NFT。');
-      setInputDisabled(true);
-      return;
-    }
-    if (myNTFs.greatLoong === 0 && myNTFs.babyLoong > 0) {
-      if (usageCount >= myNTFs.babyLoong) {
-        setHelloMessage('本月的算命机会你已经用完了。请下个月再来试试吧！');
+    if (!props.freeAccess) {
+      if (myNTFs.greatLoong === 0 && myNTFs.babyLoong === 0) {
+        setHelloMessage('在进行对话前，请确保你已经拥有神龙NFT。');
         setInputDisabled(true);
         return;
+      }
+      if (myNTFs.greatLoong === 0 && myNTFs.babyLoong > 0) {
+        if (usageCount >= myNTFs.babyLoong) {
+          setHelloMessage('本月的算命机会你已经用完了。请下个月再来试试吧！');
+          setInputDisabled(true);
+          return;
+        }
       }
     }
 
     setHelloMessage(defaultHelloMessage);
     setInputDisabled(false);
-  }, [canRequestWallet, myNTFs, usageCount, loading]);
+  }, [canRequestWallet, myNTFs, usageCount, loading, props.freeAccess]);
 
   // 获取 NFT
   useEffect(() => {
     if (!canRequestWallet) {
       return;
     }
+
+    const assetsInit = async () => {
+      setLoading(true);
+      const [greatLoongNFTRemain, babyLoongNFTRemain] = await Promise.all([
+        getNftIds(walletProvider, true),
+        getNftIds(walletProvider, false),
+      ]);
+      setMyNTFs({
+        babyLoong: babyLoongNFTRemain.length,
+        greatLoong: greatLoongNFTRemain.length,
+      });
+      setLoading(false);
+    };
     assetsInit();
-  }, [canRequestWallet]);
+  }, [canRequestWallet, walletProvider]);
 
   // 获取使用次数
   useEffect(() => {
@@ -206,10 +209,6 @@ export function Chat() {
       }}
     >
       <Header />
-      {/* <button onClick={() => setMyNTFs({ babyLoong: myNTFs.babyLoong + 2, greatLoong: 0 })}>点击切换对话输入框状态</button> */}
-      {/*<HolidayMusicPlayer*/}
-      {/*  src={"https://oss.anuniverse.com/public/257893594.mp3"}*/}
-      {/*/>*/}
       <ProChat
         renderInputArea={(_) => renderInputArea(_)}
         loading={loading}
@@ -244,7 +243,7 @@ export function Chat() {
           setChats(chats);
         }}
         request={async (messages: any) => {
-          const response = await fetch('/chat/api/openai', {
+          const response = await fetch('/api/openai', {
             method: 'POST',
             body: JSON.stringify({
               messages: messages,

@@ -1,6 +1,11 @@
 import { AIStream } from 'ai';
+import { type ServerRuntime } from 'next';
 
 const API_KEY = 'sk-RnhR7ICa4qLkfARUF9xfjI9ENzoMtDzq3';
+
+export const runtime: ServerRuntime = 'edge';
+export const maxDuration = 300;
+export const dynamic = 'force-dynamic';
 
 // 自定义解析器实现
 const customParser = (data: string) => {
