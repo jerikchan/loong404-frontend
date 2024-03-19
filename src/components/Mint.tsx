@@ -6,12 +6,10 @@ import GlobalImg from '@/assets/demo/global.png';
 import LftImg from '@/assets/demo/minus.png';
 import RhtImg from '@/assets/demo/plus.png';
 import BgImg from '@/assets/demo/bg.png';
-import ConnectButton from '@/components/ConnectButton';
 import { useWeb3Modal, useWeb3ModalAccount } from '@web3modal/ethers/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers/react';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Loading from '@/components/loading';
@@ -19,7 +17,6 @@ import { useSelector } from 'react-redux';
 import { Input, message, notification } from 'antd';
 import store from '@/store/index.js';
 import { saveLoading } from '@/store/reducer.js';
-import LogoMint from '@/assets/logoMint.png';
 import Modal from '@/components/ui/Modal';
 import Button from '@/components/ui/Button';
 import { mint, freeMint as freeMintWeb3, getBalanceWallet } from '@/utils/web3';
@@ -427,14 +424,14 @@ export function MintLayout({ isBaby }: { isBaby: boolean }) {
     } else {
       setMintType(MINT_TYPE_CONNECT);
     }
-  }, [address, chainId, refresh]);
+  }, [address, chainId, refresh, isBaby, singleMintMax, walletProvider]);
 
   // 不需要登录
   useEffect(() => {
     getTotalMinted(!isBaby).then((minted) => {
       setMinted(minted);
     });
-  }, [chainId, refresh]);
+  }, [chainId, refresh, isBaby]);
 
   const percent = getPercent(minted, total);
   const allMoney = new Decimal(price || '0')
