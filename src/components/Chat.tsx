@@ -48,7 +48,7 @@ export function Chat(props: ChatProps) {
 
   const router = useRouter();
 
-  const [chats, setChats] = useState<ChatMessage<any>[]>([]);
+  const [chats, setChats] = useState<ChatMessage[]>([]);
   const { address } = useWeb3ModalAccount();
   const [usageCount, setUsageCount] = useState<number>(Infinity);
   const [isFirstChat, setIsFirstChat] = useState<boolean>(true);
@@ -91,7 +91,7 @@ export function Chat(props: ChatProps) {
       }),
     });
     const result: UsageResult = await response.json();
-    if (result?.data?.count === undefined) {
+    if (result?.data?.count !== undefined) {
       setUsageCount(result.data.count);
     } else {
       console.error(result.msg);
@@ -220,33 +220,19 @@ export function Chat(props: ChatProps) {
           zIndex: 1,
         }}
         helloMessage={helloMessage}
-        onChatsChange={(chats: any) => {
-          const lastChat = chats[chats.length - 1];
-          const lastContent = lastChat.content as string;
-          if (
-            chats.length > 0 &&
-            lastChat.role === 'assistant' &&
-            lastContent?.includes('可以赚')
-          ) {
-            if (typeof window !== 'undefined') {
-              // 分割 lastContent use 。，！
-              const list = lastContent.split(/[。，！？]|2024年/);
-              // 获取包含“今年能赚”的语句
-              const current = list.find((item) => item.includes('可以赚'));
-              if (!current) {
-                return;
-              }
-              const res = base64Encode(current);
-              navigateDebounced('/res?res=' + res);
-            }
-          }
-          setChats(chats);
-        }}
-        request={async (messages: any) => {
+        request={async (messages) => {
+          const date = new Date();
+          const systemMessage: ChatMessage = {
+            content: `今天的日期是${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`,
+            id: nanoid(),
+            createAt: date.getTime(),
+            updateAt: date.getTime(),
+            role: 'system',
+          };
           const response = await fetch('/api/openai', {
             method: 'POST',
             body: JSON.stringify({
-              messages: messages,
+              messages: [systemMessage].concat(messages),
               userId: userId,
             }),
           });
