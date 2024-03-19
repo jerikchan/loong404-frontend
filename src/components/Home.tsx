@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import RisingBg from '@/assets/rising-bg.jpg';
-import { useRouter } from 'next/navigation';
 import TokenSwap from '@/components/tokenswap';
 import Loading from '@/components/loading';
 import { useSelector } from 'react-redux';
@@ -174,11 +173,6 @@ const BtnRht = styled.div`
 
 export function Home() {
   const loading = useSelector((state: any) => state.loading);
-  const navigate = useRouter().push;
-
-  const toGo = (url: string) => {
-    navigate(url);
-  };
 
   return (
     <BgBox>
