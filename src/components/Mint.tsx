@@ -279,6 +279,10 @@ const MAX_COUNT = 5;
 const MINT_TYPE_FREE = '2';
 const MINT_TYPE_NORMAL = '1';
 const MINT_TYPE_CONNECT = '3';
+type MintType =
+  | typeof MINT_TYPE_FREE
+  | typeof MINT_TYPE_NORMAL
+  | typeof MINT_TYPE_CONNECT;
 const Unit = 600000;
 
 export function MintLayout({ isBaby }: { isBaby: boolean }) {
@@ -290,7 +294,7 @@ export function MintLayout({ isBaby }: { isBaby: boolean }) {
   const [count, setCount] = useState(0);
   const navigate = useRouter().push;
   const searchParams = useSearchParams();
-  const [mintType, setMintType] = useState<any>(null);
+  const [mintType, setMintType] = useState<MintType>(MINT_TYPE_CONNECT);
   const [minted, setMinted] = useState<any>('');
   const [limitMint, setLimitMint] = useState(singleMintMax);
   const [total, setTotal] = useState(totalMint);
