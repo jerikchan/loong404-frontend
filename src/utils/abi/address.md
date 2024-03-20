@@ -1,11 +1,11 @@
-| 测试环境 OP Sepolia Testnet   | address                                    |
-| ----------------------------- | ------------------------------------------ |
-| greatLAddr(大龙token)         | 0xec8DF505661c0d5845Bd3D3F3a4180Eade2ACA32 |
-| greatLMintAddr(大龙mint addr) | 0xc77dF1E6D4351f8aBa98722f66c481dd236F8885 |
-| babyLAddr(小龙token)          | 0x89426d1e7D8Cc62d89eA543E696ee589DA3722E0 |
-| babyLMintAddr(小龙mint addr)  | 0x799d5050fa3dd87ef31b4Baa918A631A2521CFF4 |
-| swapAddress                   | 0x7D15890177D88a38778702643CAb414cd387Bc40 |
-| dataAddress                   | 0x46096ca702716ea68e7fb1A30679fa1B263d7e77 |
+| 测试环境 Arbiturm Sepolia Testnet | address                                    |
+| --------------------------------- | ------------------------------------------ |
+| greatLAddr(大龙token)             | 0x16BC08C21e407343F9C6f951cd11e06C5eC4f0Dd |
+| greatLMintAddr(大龙mint addr)     | 0x8F3fF5fD42915EF28EABfDBC29005D8b9Be09e6F |
+| babyLAddr(小龙token)              | 0xA4DCba97b9c82ec0C23CAc52Fc048bc6f963fcD6 |
+| babyLMintAddr(小龙mint addr)      | 0xa4249C1C66cD184877F9a23eCA043497701a597A |
+| swapAddress                       | 0x3FBad78aFC873920F00E7d4373cb59AABa3cB57a |
+| dataAddress                       | 0xb0a2291Bb9B2B14122C509A719Af124199ae0cC7 |
 
 1. 大小龙mint的时候用(greatLMintAddr，babyLMintAddr):
 
