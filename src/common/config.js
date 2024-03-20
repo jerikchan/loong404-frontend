@@ -38,9 +38,9 @@ export const Arbitrum_Sepolia = {
   rpcUrl: 'https://sepolia-rollup.arbitrum.io/rpc',
   contract: {
     GreatLoongAddress: '0x16BC08C21e407343F9C6f951cd11e06C5eC4f0Dd',
-    greatLMintAddr: '0x9A4cAb87049E493bE82bF8B1dE5d6f264D133fD6',
+    greatLMintAddr: '0x8F3fF5fD42915EF28EABfDBC29005D8b9Be09e6F',
     BabyLoongAddress: '0xA4DCba97b9c82ec0C23CAc52Fc048bc6f963fcD6',
-    babyLMintAddr: '0x3e28782b382F8d0AA33192e1C68cA9eabDA16f1E',
+    babyLMintAddr: '0xa4249C1C66cD184877F9a23eCA043497701a597A',
     swapAddress: '0x3FBad78aFC873920F00E7d4373cb59AABa3cB57a',
     dataAddress: '0xb0a2291Bb9B2B14122C509A719Af124199ae0cC7',
   },
@@ -54,9 +54,9 @@ export const Arbitrum_One = {
   rpcUrl: 'https://arbitrum.llamarpc.com',
   contract: {
     GreatLoongAddress: '0xDB3Fe75CF3263218f061C3E22dB037D15652d506',
-    greatLMintAddr: '0xAD4DF2eEb39929B288A6dBD9cF005d2936da4E0d',
+    greatLMintAddr: '0x9A4cAb87049E493bE82bF8B1dE5d6f264D133fD6',
     BabyLoongAddress: '0x09905C09975908d41bA1D761487F7785D3A7BC70',
-    babyLMintAddr: '0x2682385Aa693735Ae9717E0f88E5604B767D98A5',
+    babyLMintAddr: '0x3e28782b382F8d0AA33192e1C68cA9eabDA16f1E',
     swapAddress: '0xBc4B1e8caC87872AA6970f4d396C778CAE4F4C1F',
     dataAddress: '0xc2f9B5ec0CCbB4A0EDD2508Dec4d573a3D413a33',
   },
