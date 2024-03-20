@@ -1,9 +1,9 @@
 | 测试环境 Arbiturm Sepolia Testnet | address                                    |
 | --------------------------------- | ------------------------------------------ |
 | greatLAddr(大龙token)             | 0x16BC08C21e407343F9C6f951cd11e06C5eC4f0Dd |
-| greatLMintAddr(大龙mint addr)     | 0x9A4cAb87049E493bE82bF8B1dE5d6f264D133fD6 |
+| greatLMintAddr(大龙mint addr)     | 0x8F3fF5fD42915EF28EABfDBC29005D8b9Be09e6F |
 | babyLAddr(小龙token)              | 0xA4DCba97b9c82ec0C23CAc52Fc048bc6f963fcD6 |
-| babyLMintAddr(小龙mint addr)      | 0x3e28782b382F8d0AA33192e1C68cA9eabDA16f1E |
+| babyLMintAddr(小龙mint addr)      | 0xa4249C1C66cD184877F9a23eCA043497701a597A |
 | swapAddress                       | 0x3FBad78aFC873920F00E7d4373cb59AABa3cB57a |
 | dataAddress                       | 0xb0a2291Bb9B2B14122C509A719Af124199ae0cC7 |
 
