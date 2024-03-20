@@ -62,8 +62,10 @@ export const Arbitrum_One = {
   },
 };
 
-// export const chain = Arbitrum_Sepolia; // test
-export const chain = Arbitrum_One; // prod
+export const chain =
+  process.env.RELEASE_TARGET === 'development'
+    ? Arbitrum_Sepolia
+    : Arbitrum_One;
 // export const contractAddress = '0x582a2124A6a47Db11B33f5ae67B12055655396d8'
 // export const chain = mainnet;
 export const contractAddress = '0xBc4B1e8caC87872AA6970f4d396C778CAE4F4C1F';
