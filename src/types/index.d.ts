@@ -4,3 +4,11 @@ export interface IUsage {
   month: string;
   count: number;
 }
+
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      RELEASE_TARGET: 'development' | 'production' | undefined;
+    }
+  }
+}

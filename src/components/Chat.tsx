@@ -222,7 +222,7 @@ export function Chat(props: ChatProps) {
         helloMessage={helloMessage}
         request={async (messages) => {
           const date = new Date();
-          const systemMessage: ChatMessage = {
+          const dateMessage: ChatMessage = {
             content: `今天的日期是${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`,
             id: nanoid(),
             createAt: date.getTime(),
@@ -232,7 +232,7 @@ export function Chat(props: ChatProps) {
           const response = await fetch('/api/openai', {
             method: 'POST',
             body: JSON.stringify({
-              messages: [systemMessage].concat(messages),
+              messages: [dateMessage].concat(messages),
               userId: userId,
             }),
           });
