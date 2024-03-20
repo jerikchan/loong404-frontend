@@ -92,7 +92,8 @@ export function Chat(props: ChatProps) {
     });
     const result: UsageResult = await response.json();
     if (result?.data?.count !== undefined) {
-      setUsageCount(result.data.count);
+      // setUsageCount(result.data.count);
+      console.log(result);
     } else {
       console.error(result.msg);
     }
