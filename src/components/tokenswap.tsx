@@ -200,6 +200,7 @@ const TokenSwap = () => {
       try {
         await swap(walletProvider, firstInput, firstValue === 1);
         message.success('Swap success');
+        setFirstInput(0);
       } catch (e: any) {
         console.error(e);
         const msg = e.message
