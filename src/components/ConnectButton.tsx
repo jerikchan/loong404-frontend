@@ -271,13 +271,16 @@ export default function ConnectButton() {
   const onClaim = async () => {
     store.dispatch(saveLoading(true));
     try {
-      if (Number(tokens.greatLoong) > 0) {
+      if (Number(claimAmount.greatLoong) > 0) {
         await claimRewards(walletProvider, true);
       }
-      if (Number(tokens.babyLoong) > 0) {
+      if (Number(claimAmount.babyLoong) > 0) {
         await claimRewards(walletProvider, false);
       }
-      if (Number(tokens.greatLoong) > 0 || Number(tokens.babyLoong) > 0) {
+      if (
+        Number(claimAmount.greatLoong) > 0 ||
+        Number(claimAmount.babyLoong) > 0
+      ) {
         message.success('Claim successfully!');
         setIsModalOpenReward(false);
         tokensInit();
