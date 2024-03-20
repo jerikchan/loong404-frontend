@@ -241,11 +241,14 @@ export function Chat(props: ChatProps) {
 
           // 第一次对话后，把轮数加1
           if (isFirstChat && address) {
-            await addUsageCount(
-              address,
-              `${new Date().getFullYear()}-${new Date().getMonth() + 1}`
-            );
-            setIsFirstChat(false);
+            try {
+              await addUsageCount(
+                address,
+                `${new Date().getFullYear()}-${new Date().getMonth() + 1}`
+              );
+            } finally {
+              setIsFirstChat(false);
+            }
           }
           return response;
         }}
