@@ -66,6 +66,9 @@ const Box = styled.div`
       @media (max-width: 1100px) {
         width: 100%;
       }
+      @media (max-width: 680px) {
+        padding: 30px 20px;
+      }
       .label {
         font-size: 16px;
         font-weight: 400;

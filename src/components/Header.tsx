@@ -8,7 +8,7 @@ import LogoMint from '@/assets/logoMint.png';
 const LogoBox = styled.div`
   position: absolute;
   left: 40px;
-  top: 40px;
+  top: 20px;
   z-index: 99;
   cursor: pointer;
   width: 200px;
@@ -28,19 +28,20 @@ const LogoBox = styled.div`
   }
   @media (max-width: 1100px) {
     left: 5vw;
-    top: 5vw;
+    top: 2vw;
     width: 145px;
+    height: 42px;
   }
 `;
 
 const ConnectBox = styled.div`
   position: absolute;
   right: 40px;
-  top: 40px;
+  top: 20px;
   z-index: 999;
   @media (max-width: 1100px) {
     right: 5vw;
-    top: 5vw;
+    top: 2vw;
   }
 `;
 
