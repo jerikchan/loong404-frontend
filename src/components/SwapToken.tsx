@@ -159,7 +159,7 @@ const options = [
   { value: 2, label: 'Baby Loong tokens' },
 ];
 
-const TokenSwap = () => {
+const SwapToken = () => {
   const { open } = useWeb3Modal();
   const { address, chainId } = useWeb3ModalAccount();
   const { walletProvider } = useWeb3ModalProvider();
@@ -315,4 +315,4 @@ const TokenSwap = () => {
   );
 };
 
-export default TokenSwap;
+export default SwapToken;

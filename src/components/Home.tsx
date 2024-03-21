@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import LoongBg from '@/assets/loong-bg2.png';
-import TokenSwap from '@/components/TokenSwap';
+import SwapToken from '@/components/SwapToken';
 import Loading from '@/components/loading';
 import { useSelector } from 'react-redux';
 import { Header } from './Header';
@@ -219,7 +219,7 @@ export function Home() {
       </InnerBox>
       {/* Swap */}
       <InnerBox>
-        <TokenSwap />
+        <SwapToken />
       </InnerBox>
     </BgBox>
   );
