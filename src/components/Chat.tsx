@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import debounce from 'lodash/debounce';
 import { ChatMessage } from '@ant-design/pro-chat/es/types/message';
 import dynamic from 'next/dynamic'; // 生成 ID
-import RisingBg from '@/assets/rising-bg.jpg';
+import LoongBg from '@/assets/loong-bg2.png';
 import { Header } from './Header';
 import {
   useWeb3ModalAccount,
@@ -14,6 +14,20 @@ import {
 } from '@web3modal/ethers/react';
 import { IUsage } from '@/types';
 import { getNftIds } from '@/utils/web3';
+import styled from 'styled-components';
+
+const BgContainer = styled.div`
+  background-image: url(${LoongBg.src});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-top: 100px;
+  width: 100vw;
+  height: 100vh;
+  @media (max-width: 1100px) {
+    background-position: left top;
+  }
+`;
 
 // import ProChat from './ProChat';
 const ProChat = dynamic(() => import('./ProChat'), { ssr: false });
@@ -198,18 +212,8 @@ export function Chat(props: ChatProps) {
   };
 
   return (
-    <div
-      style={{
-        backgroundImage: `url(${RisingBg.src})`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        paddingTop: '100px',
-        width: '100vw',
-        height: '100vh',
-      }}
-    >
-      <Header />
+    <BgContainer>
+      <Header dark={true} />
       <ProChat
         renderInputArea={(_) => renderInputArea(_)}
         loading={loading}
@@ -258,6 +262,6 @@ export function Chat(props: ChatProps) {
           actionsRender: false,
         }}
       />
-    </div>
+    </BgContainer>
   );
 }

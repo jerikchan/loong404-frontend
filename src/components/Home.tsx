@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import RisingBg from '@/assets/rising-bg.jpg';
-import TokenSwap from '@/components/tokenswap';
+import LoongBg from '@/assets/loong-bg2.png';
+import SwapToken from '@/components/SwapToken';
 import Loading from '@/components/loading';
 import { useSelector } from 'react-redux';
 import { Header } from './Header';
@@ -15,9 +15,6 @@ const BgBox = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
-  @media (max-width: 1100px) {
-    padding-top: 100px;
-  }
 `;
 const InnerBox = styled.div`
   width: 100%;
@@ -33,7 +30,6 @@ const InnerBox = styled.div`
 
 const InnerBoxContent = styled.div`
   width: 100%;
-  max-width: 1600px;
   display: flex;
 `;
 
@@ -67,10 +63,10 @@ const Leftbox = styled.div`
 const FloatBox = styled.div`
   position: absolute;
   right: 0;
-  top: 25vw;
+  top: 20vw;
   @media (max-width: 1440px) {
     right: 0;
-    top: 28vw;
+    top: 16vw;
   }
   @media (max-width: 1100px) {
     /* top: auto;
@@ -177,10 +173,10 @@ export function Home() {
   return (
     <BgBox>
       {loading && <Loading />}
-      <Header />
+      <Header dark={true} />
       <InnerBox>
         <InnerBoxContent>
-          <img src={RisingBg.src} alt='' className='bg' />
+          <img src={LoongBg.src} alt='' className='bg' />
         </InnerBoxContent>
         <FloatBox>
           <RhtBox>
@@ -223,7 +219,7 @@ export function Home() {
       </InnerBox>
       {/* Swap */}
       <InnerBox>
-        <TokenSwap />
+        <SwapToken />
       </InnerBox>
     </BgBox>
   );
