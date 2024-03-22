@@ -424,6 +424,7 @@ export function MintLayout({ isBaby }: { isBaby: boolean }) {
         })
         .catch((e) => {
           setMintType(MINT_TYPE_NORMAL);
+          console.error(e);
         });
     } else {
       setMintType(MINT_TYPE_CONNECT);
@@ -506,7 +507,7 @@ export function MintLayout({ isBaby }: { isBaby: boolean }) {
                   the ethers of the blockchain.{' '}
                 </strong>
                 <span>
-                  This collection presents 1,100 uniquely random AI NFTs,
+                  This collection presents {totalMint} uniquely random AI NFTs,
                   magical gnosis AI especially for everyone the digital age.
                 </span>
               </div>
