@@ -247,12 +247,13 @@ export function Chat(props: ChatProps) {
           // 第一次对话后，把轮数加1
           if (isFirstChat && address) {
             try {
-              await addUsageCount(
+              addUsageCount(
                 address,
                 `${new Date().getFullYear()}-${new Date().getMonth() + 1}`
               );
-            } finally {
               setIsFirstChat(false);
+            } catch (e) {
+              console.error(e);
             }
           }
           return response;

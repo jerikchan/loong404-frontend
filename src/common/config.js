@@ -51,7 +51,9 @@ export const Arbitrum_One = {
   name: 'Arbitrum LlamaNodes',
   currency: 'ETH',
   explorerUrl: 'https://arbiscan.io/',
-  rpcUrl: 'https://arbitrum.llamarpc.com',
+  // rpcUrl: 'https://arbitrum.llamarpc.com',
+  rpcUrl:
+    'https://api.zan.top/node/v1/arb/one/ed431fbd9ace462db9db1addddba90f6',
   contract: {
     GreatLoongAddress: '0xDB3Fe75CF3263218f061C3E22dB037D15652d506',
     greatLMintAddr: '0x9A4cAb87049E493bE82bF8B1dE5d6f264D133fD6',
