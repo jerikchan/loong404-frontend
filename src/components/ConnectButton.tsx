@@ -23,6 +23,7 @@ import {
 } from '../utils/web3';
 import Button from './ui/Button';
 import Modal from './ui/Modal';
+import copy from 'copy-to-clipboard';
 
 const ConnectBtn = styled.button`
   background: #ebe0cc;
@@ -198,8 +199,12 @@ export default function ConnectButton() {
   };
 
   const onCopy = (text: string) => {
-    navigator.clipboard.writeText(text);
-    message.success('Copied');
+    const success = copy(text);
+    if (success) {
+      message.success('Copied');
+    } else {
+      message.error('Copy failed');
+    }
   };
 
   const onClose = () => {
