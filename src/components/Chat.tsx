@@ -1,7 +1,7 @@
 'use client';
 import { createElement, useCallback, useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
-import { base64Encode } from '@/utils';
+import { MockResponse, base64Encode } from '@/utils';
 import { useRouter } from 'next/navigation';
 import debounce from 'lodash/debounce';
 import { ChatMessage } from '@ant-design/pro-chat/es/types/message';
@@ -236,27 +236,36 @@ export function Chat(props: ChatProps) {
               role: 'system',
             },
           ];
-          const response = await fetch('/api/openai', {
-            method: 'POST',
-            body: JSON.stringify({
-              messages: systemMessages.concat(messages),
-              userId: userId,
-            }),
-          });
+          try {
+            const response = await fetch('/api/openai', {
+              method: 'POST',
+              body: JSON.stringify({
+                messages: systemMessages.concat(messages),
+                userId: userId,
+              }),
+            });
 
-          // 第一次对话后，把轮数加1
-          if (isFirstChat && address) {
-            try {
-              addUsageCount(
-                address,
-                `${new Date().getFullYear()}-${new Date().getMonth() + 1}`
-              );
-              setIsFirstChat(false);
-            } catch (e) {
-              console.error(e);
+            // 第一次对话后，把轮数加1
+            if (isFirstChat && address) {
+              try {
+                addUsageCount(
+                  address,
+                  `${new Date().getFullYear()}-${new Date().getMonth() + 1}`
+                );
+                setIsFirstChat(false);
+              } catch (e) {
+                console.error(e);
+              }
             }
+            return response;
+          } catch (e) {
+            console.error(e);
+            const mockResponse = new MockResponse(
+              '啊呜～龙龙去赛博世界打恶灵了，现在受伤了，要养一养~',
+              50
+            );
+            return mockResponse.getResponse();
           }
-          return response;
         }}
         chatItemRenderConfig={{
           avatarRender: false,

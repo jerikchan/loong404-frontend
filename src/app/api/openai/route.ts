@@ -21,9 +21,11 @@ const customParser = (data: string) => {
           };
         }>;
       };
-      return json.choices[0]?.delta?.content;
-    } catch (e) {
+      const content = json.choices[0]?.delta?.content;
+      return content;
+    } catch {
       console.error('[Request] parse error', text);
+      return '啊呜～龙龙发现赛博世界出现恶灵，我要去打败他，稍等我片刻～';
     }
   } catch (error) {
     console.error('解析错误', error);
@@ -36,7 +38,6 @@ export async function POST(request: Request) {
     messages = [],
     userId,
   }: Partial<{ messages: Array<any>; userId: string }> = await request.json();
-
   const requestPayload = {
     messages,
     chatId: userId,
@@ -67,6 +68,5 @@ export async function POST(request: Request) {
   // 使用AIStream处理响应流
   const stream = AIStream(response, customParser);
 
-  // 将ReadableStream转换为Response并返回
   return new Response(stream);
 }
