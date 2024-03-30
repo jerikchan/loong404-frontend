@@ -1,7 +1,7 @@
 import { AIStream } from 'ai';
 import { type ServerRuntime } from 'next';
 
-const API_KEY = 'sk-RnhR7ICa4qLkfARUF9xfjI9ENzoMtDzq3';
+const API_KEY = process.env.OPENAI_API_KEY;
 
 export const runtime: ServerRuntime = 'edge';
 export const maxDuration = 300;
@@ -43,6 +43,8 @@ export async function POST(request: Request) {
     stream: true,
     model: 'gpt-3.5-turbo',
   };
+  // console.log('requestPayload', requestPayload);
+  // console.log('api key', API_KEY)
 
   const chatPath = 'https://ashley.lonic.tech/api/' + 'v1/chat/completions';
 
