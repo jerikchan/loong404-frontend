@@ -12,6 +12,7 @@ const ModalWrapper = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   color: #000;
   z-index: 99;
+  margin: 0!important;
 `;
 
 const ModalContent = styled.div`
@@ -50,10 +51,11 @@ const ModalTitle = styled.h2`
   font-weight: 700;
 `;
 
-const Modal = ({ isOpen, onClose, children, title }) => {
+function Modal(props) {
+  const { isOpen, onClose, children, title, className } = props;
   return (
     <ModalWrapper $isOpen={isOpen}>
-      <ModalContent>
+      <ModalContent className={className}>
         <ModalHeader>
           <ModalTitle>{title}</ModalTitle>
           <CloseButton onClick={onClose}>
@@ -64,6 +66,6 @@ const Modal = ({ isOpen, onClose, children, title }) => {
       </ModalContent>
     </ModalWrapper>
   );
-};
+}
 
 export default Modal;

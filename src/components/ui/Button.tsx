@@ -19,13 +19,15 @@ const Button = ({
   children,
   onClick,
   style,
+  className,
 }: {
   children: React.ReactNode;
   onClick?: React.PointerEventHandler<HTMLButtonElement>;
   style?: React.HTMLAttributes<HTMLButtonElement>['style'];
+  className?: string;
 }) => {
   return (
-    <StyledButton onClick={onClick} style={style}>
+    <StyledButton onClick={onClick} style={style} className={className}>
       {children}
     </StyledButton>
   );

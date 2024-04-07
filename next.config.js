@@ -2,6 +2,17 @@ const webpack = require('webpack');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ipfs.io',
+        port: '',
+        pathname: '/ipfs/**',
+      },
+    ],
+  },
   transpilePackages: [
     '@ant-design/pro-editor',
     '@ant-design/pro-chat',

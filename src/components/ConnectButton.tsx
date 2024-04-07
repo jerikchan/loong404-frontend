@@ -24,6 +24,7 @@ import {
 import Button from './ui/Button';
 import Modal from './ui/Modal';
 import copy from 'copy-to-clipboard';
+import Link from 'next/link';
 
 const ConnectBtn = styled.button`
   background: #ebe0cc;
@@ -327,6 +328,12 @@ export default function ConnectButton() {
         <li onClick={() => onAssets()}>Assets</li>
         <li onClick={() => onInvite()}>Invite</li>
         <li onClick={() => onReward()}>Reward</li>
+        <li>
+          <Link href='/farming'>Farming</Link>
+        </li>
+        <li>
+          <Link href='treasure'>Treasure</Link>
+        </li>
         <li onClick={() => disconnectWallet()}>Logout</li>
       </LineBox>
     </>
@@ -412,6 +419,7 @@ export default function ConnectButton() {
         isOpen={isModalOpenAssets}
         onClose={() => setIsModalOpenAssets(false)}
         title='My Assets'
+        className=''
       >
         <AssetsBox>
           <div className='desc'>

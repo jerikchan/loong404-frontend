@@ -1,3 +1,6 @@
+import { ILoongImageData } from '@/types';
+import { ethers } from 'ethers';
+
 export function base64Encode(str: string) {
   // 首先使用 encodeURIComponent 对字符串进行编码
   const encodedUriComponent = encodeURIComponent(str);
@@ -48,5 +51,65 @@ export class MockResponse {
 
   getResponse() {
     return new Response(this.stream);
+  }
+}
+
+function resolve(...paths: string[]) {
+  return paths.map((path) => path.replace(/^\/|\/$/g, '')).join('/');
+}
+
+function getIPFSPrefixUrl() {
+  return 'https://ipfs.io/ipfs/';
+}
+
+function createGetLoongImageData(cid: string) {
+  return async (id: string) => {
+    const res = await fetch(resolve(getIPFSPrefixUrl(), cid, id));
+    const json: ILoongImageData = await res.json();
+    return json;
+  };
+}
+
+export const getGreatLoongImageData = createGetLoongImageData(
+  process.env.NEXT_PUBLIC_GREAT_LOONG_IMAGE_CID
+);
+export const getBabyLoongImageData = createGetLoongImageData(
+  process.env.NEXT_PUBLIC_BABY_LOONG_IMAGE_CID
+);
+
+function createGetLoongImageUrl(cid: string) {
+  return (image: string) =>
+    resolve(getIPFSPrefixUrl(), image.replace('ipfs://', ''));
+}
+
+export const getGreatLoongImageUrl = createGetLoongImageUrl(
+  process.env.NEXT_PUBLIC_GREAT_LOONG_IMAGE_CID
+);
+export const getBabyLoongImageUrl = createGetLoongImageUrl(
+  process.env.NEXT_PUBLIC_BABY_LOONG_IMAGE_CID
+);
+
+export function weiToDate(wei: bigint) {
+  return new Date(Number(ethers.formatUnits(wei, 'wei')) * 1000);
+}
+
+export function formatCountdownMs(ms: number) {
+  const hours = Math.floor(ms / 1000 / 60 / 60);
+  const minutes = Math.floor(ms / 1000 / 60);
+  const seconds = Math.floor(ms / 1000);
+  return `${hours}h ${minutes % 60}m ${seconds % 60}s`;
+}
+
+export function extractReason(message: string) {
+  const reasonRegex = /reason="([^"]+)"/; // 匹配 reason="..." 中的内容
+  const reasonMatch = message.match(reasonRegex); // 使用正则表达式匹配
+  const error = /(.+?) \(action=/; // 匹配 Error 后面到第一个括号之间的内容
+  const errorMatch = message.match(error); // 使用正则表达式匹配
+  if (reasonMatch) {
+    return reasonMatch[1]; // 返回匹配到的 reason 内容
+  } else if (errorMatch) {
+    return errorMatch[1]; // 返回匹配到的 Error 内容
+  } else {
+    return null; // 如果未匹配到，返回 null 或者其他默认值
   }
 }

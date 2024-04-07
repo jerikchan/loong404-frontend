@@ -5,6 +5,7 @@ import Loading from '@/components/loading';
 import { useSelector } from 'react-redux';
 import { Header } from './Header';
 import Link from 'next/link';
+import { EnterFarming } from './EnterFarming';
 
 const BgBox = styled.div`
   width: 100%;
@@ -178,6 +179,7 @@ export function Home() {
         <InnerBoxContent>
           <img src={LoongBg.src} alt='' className='bg' />
         </InnerBoxContent>
+        <EnterFarming />
         <FloatBox>
           <RhtBox>
             <RhtInner>

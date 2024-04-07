@@ -90,6 +90,9 @@ const TitleItem = styled.div<TitleItemProps>`
   cursor: pointer;
   font-size: ${(props) => (props.$isActive ? '30px' : '24px')};
   font-weight: 700;
+  padding-bottom: 10px;
+  border-bottom: 2px solid
+    ${(props) => (props.$isActive ? '#fff' : 'transparent')};
 `;
 
 interface ProBoxProps {

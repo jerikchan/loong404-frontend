@@ -7,6 +7,9 @@
 | swapAddress                       | 0x3FBad78aFC873920F00E7d4373cb59AABa3cB57a |
 | dataAddress                       | 0xb0a2291Bb9B2B14122C509A719Af124199ae0cC7 |
 
+| greatLFarmingAddr | 0x512273384A35D749207Db806cF3E1ed89E5613a3 |
+| babyLFarmingAddr | 0xafA0860737Fa278812e7374681bC83bc1b031F51 |
+
 1. 大小龙mint的时候用(greatLMintAddr，babyLMintAddr):
 
 - freeMint()：free mint
