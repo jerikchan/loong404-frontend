@@ -171,6 +171,7 @@ function OpenedTreasure() {
     const fetchGreatFarmingTokenAmount = async () => {
       if (!walletProvider) return;
       const data = await getFarmingTokenAmount(walletProvider, true);
+      console.log('get great farming token amount:', data);
       setGreatFarmingTokenAmount(data);
     };
 
@@ -181,6 +182,7 @@ function OpenedTreasure() {
     const fetchBabyFarmingTokenAmount = async () => {
       if (!walletProvider) return;
       const data = await getFarmingTokenAmount(walletProvider, false);
+      console.log('get baby farming token amount:', data);
       setBabyFarmingTokenAmount(data);
     };
 
@@ -191,6 +193,7 @@ function OpenedTreasure() {
     const fetchTalismanNum = async () => {
       if (!walletProvider) return;
       const num = await getTalismanNum(walletProvider);
+      console.log('get talisman num:', num);
       setTalismanNum(num);
     };
 
@@ -201,6 +204,7 @@ function OpenedTreasure() {
     const fetchFarmingEthAmount = async () => {
       if (!walletProvider) return;
       const data = await getFarmingEthAmount(walletProvider);
+      console.log('get farming eth amount:', data);
       setFarmingEthAmount(data);
     };
 
@@ -314,6 +318,7 @@ function OpenedTreasure() {
           <input
             type='number'
             value={toBeExtractedAmount}
+            onChange={(e) => setToBeExtractedAmount(Number(e.target.value))}
             max={
               isGreatClaiming
                 ? greatFarmingTokenAmount?.toBeExtractedAmount
@@ -362,6 +367,7 @@ export default function Page() {
       if (!walletProvider) return;
       // 不分大小龙，随便取一个，取大龙的
       const num = await getTimeReductionCardNum(walletProvider, true);
+      console.log('get time reduction card num:', num);
       setTimeReductionCardNum(num);
     };
     fetchTimeReductionCardNum();

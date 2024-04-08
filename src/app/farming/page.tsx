@@ -10,6 +10,7 @@ import {
   redeemLoong,
   getTimeReductionCardNum,
   reduceSleepingTime,
+  userLoongFarmings,
 } from '@/utils/farming';
 import { useWeb3ModalProvider } from '@web3modal/ethers/react';
 import { Suspense, useEffect, useState } from 'react';
@@ -58,15 +59,16 @@ function LoongImage({
     try {
       message.info('approving...');
       await loongApproveFarming(walletProvider, id, isGreatL);
-      message.success('approve success! now farming...');
+      message.success('approve success!');
     } catch (e) {
       store.dispatch(saveLoading(false));
-      message.error('approve error.');
+      message.error('approve failed.');
       console.error(e);
       return;
     }
     // farming
     try {
+      message.info('farming...');
       await loongFarming(walletProvider, id, isGreatL);
       store.dispatch(saveLoading(false));
       message.success('farming success!');
@@ -74,7 +76,7 @@ function LoongImage({
       onSuccess?.();
     } catch (e) {
       store.dispatch(saveLoading(false));
-      message.error('farming error.');
+      message.error('farming failed.');
       console.error(e);
       return;
     }
@@ -160,33 +162,22 @@ function LoongFarmingImage({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [farmingResult, setFarmingResult] =
     useState<ILoongFarmingResult | null>(null);
-  const [time, setTime] = useState(0);
   const [farmingCountdownMs, setFarmingCountdownMs] = useState(0);
   const [sleepCountdownMs, setSleepCountdownMs] = useState(0);
 
-  const doFarming = async () => {
+  const doFarmingAgain = async () => {
     if (!walletProvider) return;
-    // approve
     store.dispatch(saveLoading(true));
-    try {
-      message.info('approving...');
-      await loongApproveFarming(walletProvider, data.id, isGreatL);
-      message.success('approve success! now farming...');
-    } catch (e) {
-      store.dispatch(saveLoading(false));
-      message.error(extractReason((e as Error).message) || 'approve error.');
-      console.error(e);
-      return;
-    }
     // farming
     try {
+      message.info('farming...');
       await loongFarming(walletProvider, data.id, isGreatL);
       store.dispatch(saveLoading(false));
       message.success('farming success!');
       onSuccess?.();
     } catch (e) {
       store.dispatch(saveLoading(false));
-      message.error(extractReason((e as Error).message) || 'farming error.');
+      message.error(extractReason((e as Error).message) || 'farming failed.');
       console.error(e);
       return;
     }
@@ -196,12 +187,14 @@ function LoongFarmingImage({
     if (!walletProvider) return;
     store.dispatch(saveLoading(true));
     try {
+      // 调用探险结果交互，不会返回数据结果数据
       const result = await getLoongFarmingResult(
         walletProvider,
         data.id,
         isGreatL
       );
       setFarmingResult(result);
+
       store.dispatch(saveLoading(false));
       message.success('get farming result success!');
       setIsModalOpen(true);
@@ -209,7 +202,7 @@ function LoongFarmingImage({
     } catch (e) {
       store.dispatch(saveLoading(false));
       message.error(
-        extractReason((e as Error).message) || 'get farming result error.'
+        extractReason((e as Error).message) || 'get farming result failed.'
       );
       console.error(e);
       return;
@@ -226,7 +219,7 @@ function LoongFarmingImage({
       onSuccess?.();
     } catch (e) {
       store.dispatch(saveLoading(false));
-      message.error(extractReason((e as Error).message) || 'redeem error.');
+      message.error(extractReason((e as Error).message) || 'redeem failed.');
       console.error(e);
       return;
     }
@@ -243,7 +236,7 @@ function LoongFarmingImage({
     } catch (e) {
       store.dispatch(saveLoading(false));
       message.error(
-        extractReason((e as Error).message) || 'reduce sleeping time error.'
+        extractReason((e as Error).message) || 'reduce sleeping time failed.'
       );
       console.error(e);
       return;
@@ -274,7 +267,7 @@ function LoongFarmingImage({
       } else if (farmingResult.farmingReward === '3') {
         resultMessage = `I found Loong God energy fragments scattered in the cyber world! Collecting a certain amount can summon my kinfolk.`;
       } else {
-        resultMessage = `Hey! Look what I brought? Humans seem to call this a mystery box!`;
+        resultMessage = `Hey! Look what I brought? Humans seem to call this a blind box!`;
       }
     } else {
       resultMessage = `Although it's a bit awkward, this expedition was uneventful, which might also be considered a kind of luck~:)`;
@@ -285,7 +278,8 @@ function LoongFarmingImage({
   const isSleeping = sleepCountdownMs > 0;
 
   useEffect(() => {
-    const tick = setInterval(() => {
+    const tick = setInterval(check, 1000);
+    function check() {
       const left = data.farmingEndTime.getTime() - Date.now();
       if (left > 0) {
         setFarmingCountdownMs(left);
@@ -293,13 +287,14 @@ function LoongFarmingImage({
         setFarmingCountdownMs(0);
         clearInterval(tick);
       }
-    }, 1000);
-
+    }
+    check();
     return () => clearInterval(tick);
   }, [data.farmingEndTime]);
 
   useEffect(() => {
-    const tick = setInterval(() => {
+    const tick = setInterval(check, 1000);
+    function check() {
       const left = data.sleepEndTime.getTime() - Date.now();
       if (left > 0) {
         setSleepCountdownMs(left);
@@ -307,8 +302,8 @@ function LoongFarmingImage({
         setSleepCountdownMs(0);
         clearInterval(tick);
       }
-    }, 1000);
-
+    }
+    check();
     return () => clearInterval(tick);
   }, [data.sleepEndTime]);
 
@@ -368,13 +363,13 @@ function LoongFarmingImage({
               <div className='flex items-center justify-between'>
                 <button
                   onClick={() => doRedeem()}
-                  className='mx-auto block rounded-lg bg-[#ebe0cc] px-8 py-2 text-base font-bold text-[#0a0a0b]'
+                  className='mx-auto block rounded-lg bg-[#ebe0cc] px-6 py-2 text-base font-bold text-[#0a0a0b]'
                 >
                   Redeem
                 </button>
                 <button
-                  onClick={() => doFarming()}
-                  className='mx-auto block rounded-lg bg-[#ebe0cc] px-8 py-2 text-base font-bold text-[#0a0a0b]'
+                  onClick={() => doFarmingAgain()}
+                  className='mx-auto block rounded-lg bg-[#ebe0cc] px-6 py-2 text-base font-bold text-[#0a0a0b]'
                 >
                   Explore
                 </button>
@@ -385,7 +380,7 @@ function LoongFarmingImage({
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             title='Explore Results'
-            className='!max-w-[380px]'
+            className='!max-w-[480px]'
           >
             <>
               <div>{resultMessage}</div>
@@ -393,7 +388,7 @@ function LoongFarmingImage({
                 <Button onClick={() => setIsModalOpen(false)}>Confirm</Button>
                 <Link href='/treasure'>
                   <Button onClick={() => setIsModalOpen(false)}>
-                    View the treasure chest
+                    View treasure
                   </Button>
                 </Link>
               </div>

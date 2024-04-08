@@ -43,8 +43,8 @@ export const Arbitrum_Sepolia = {
     babyLMintAddr: '0xa4249C1C66cD184877F9a23eCA043497701a597A',
     swapAddress: '0x3FBad78aFC873920F00E7d4373cb59AABa3cB57a',
     dataAddress: '0xb0a2291Bb9B2B14122C509A719Af124199ae0cC7',
-    greatLFarmingAddr: '0x512273384A35D749207Db806cF3E1ed89E5613a3',
-    babyLFarmingAddr: '0xafA0860737Fa278812e7374681bC83bc1b031F51',
+    greatLFarmingAddr: '0xE20e2EdBb15635c9913ac10D91c717018a82fc71',
+    babyLFarmingAddr: '0x376fB81695D3CA27F0A4324f7EbEE2980Fabd785',
   },
 };
 

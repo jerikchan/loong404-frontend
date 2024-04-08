@@ -1,4 +1,4 @@
-import { type Eip1193Provider, ethers } from 'ethers';
+import { type Eip1193Provider, ethers, EventLog, AbiCoder } from 'ethers';
 import { chain } from '../common/config';
 import GreatLFarmingABI from './abi/GreatLFarming.json';
 import BabyLFarmingABI from './abi/BabyLFarming.json';
@@ -6,6 +6,7 @@ import {
   getLoongContract,
   getLoongFarmingContract,
   getLoongFarmingAddress,
+  getLoongFarmingABI,
 } from './common';
 import {
   IFarmingETHAmount,
@@ -34,7 +35,10 @@ export const loongApproveFarming = async (
   isGreatL: boolean
 ) => {
   const contract = await getLoongContract(isGreatL, walletProvider);
-  const tx = await contract.approve(getLoongFarmingAddress(isGreatL), id);
+  const tx = await contract.approve(
+    getLoongFarmingAddress(isGreatL),
+    ethers.parseUnits(id, 'wei')
+  );
   await tx.wait();
 };
 
@@ -44,7 +48,8 @@ export const loongFarming = async (
   isGreatL: boolean
 ) => {
   const contract = await getLoongFarmingContract(isGreatL, walletProvider);
-  await contract.dragonFraming(id);
+  const result = await contract.dragonFraming(ethers.parseUnits(id, 'wei'));
+  return result;
 };
 
 export const getUserLoongFarmingList = async (
@@ -71,8 +76,32 @@ export const getLoongFarmingResult = async (
   isGreatL: boolean
 ) => {
   const contract = await getLoongFarmingContract(isGreatL, walletProvider);
+  const tx = <ethers.TransactionResponse>(
+    await contract.getDragonFarmingResult(ethers.parseUnits(id, 'wei'))
+  );
+  const receipt = <ethers.TransactionReceipt>await tx.wait();
+  const data = <[bigint, bigint, bigint, bigint]>(
+    (<ethers.EventLog>receipt.logs[0]).args.toArray()
+  );
+  const result: ILoongFarmingResult = {
+    id: ethers.formatUnits(data[0], 'wei'),
+    farmingEndTime: weiToDate(data[1]),
+    farmingReward: ethers.formatUnits(data[2], 'wei') as IFarmingReward,
+    farmingResult: ethers.formatUnits(data[3], 'wei') as IFarmingResult,
+  };
+  return result;
+};
+
+export const userLoongFarmings = async (
+  walletProvider: Eip1193Provider,
+  id: string
+) => {
+  const contract = await getLoongFarmingContract(true, walletProvider);
   const data: [bigint, bigint, bigint, bigint] =
-    await contract.getDragonFarmingResult(ethers.parseEther(id));
+    await contract.userDragonFarmings(
+      await contract.getAddress(),
+      ethers.parseUnits(id, 'wei')
+    );
   const result: ILoongFarmingResult = {
     id: ethers.formatUnits(data[0], 'wei'),
     farmingEndTime: weiToDate(data[1]),
