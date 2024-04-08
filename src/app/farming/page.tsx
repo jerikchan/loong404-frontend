@@ -115,7 +115,7 @@ function LoongImage({
               onClick={() => setIsModalOpen(true)}
               className='mx-auto block rounded-lg bg-[#ebe0cc] px-12 py-2 text-base font-bold text-[#0a0a0b]'
             >
-              去探险
+              Explore
             </button>
           </div>
           <Modal
@@ -125,16 +125,17 @@ function LoongImage({
             className='!max-w-[380px]'
           >
             <div>
-              确定送龙龙去探险吗？有可能获得丰厚奖励，也可能遇到恶灵哦！
+              Are you sure you want to send me on an adventure? You might win
+              substantial rewards, or you might encounter evil spirits!
             </div>
             <div className='mt-6 flex items-center justify-center space-x-8'>
               <Button
                 onClick={() => setIsModalOpen(false)}
                 className='!border !border-solid !border-gray-500 !bg-white !text-[#6b6c6e]'
               >
-                取消
+                Cancel
               </Button>
-              <Button onClick={() => doFarming()}>确定</Button>
+              <Button onClick={() => doFarming()}>Confirm</Button>
             </div>
           </Modal>
         </div>
@@ -269,16 +270,14 @@ function LoongFarmingImage({
   if (farmingResult) {
     if (farmingResult.farmingResult === '1') {
       if (farmingResult.farmingReward === '2') {
-        resultMessage = '我在赛博世界找到了这个，好像挺值钱的，都给你了。';
+        resultMessage = `I found this in the cyber world, it seems quite valuable, it's all yours now.`;
       } else if (farmingResult.farmingReward === '3') {
-        resultMessage =
-          '我找到散落在赛博世界的龙神能量碎片！集齐一定数量可以召唤我的同族。';
+        resultMessage = `I found Loong God energy fragments scattered in the cyber world! Collecting a certain amount can summon my kinfolk.`;
       } else {
-        resultMessage = '嘿！看我带来了什么？ 人类好像把这叫盲盒！';
+        resultMessage = `Hey! Look what I brought? Humans seem to call this a mystery box!`;
       }
     } else {
-      resultMessage =
-        '虽然很尴尬，但这次探险确实风平浪静，可能也是一种幸运吧~：）';
+      resultMessage = `Although it's a bit awkward, this expedition was uneventful, which might also be considered a kind of luck~:)`;
     }
   }
 
@@ -332,7 +331,8 @@ function LoongFarmingImage({
             </div>
             {data.farmingStatus && isFarming && (
               <div className='flex h-[40px] items-center justify-center text-center text-xs leading-none'>
-                探险中，剩余时间：{formatCountdownMs(farmingCountdownMs)}
+                Exploring, remaining time:{' '}
+                {formatCountdownMs(farmingCountdownMs)}
               </div>
             )}
             {data.farmingStatus && !isFarming && (
@@ -340,22 +340,23 @@ function LoongFarmingImage({
                 onClick={() => fetchLoongFarmingResult()}
                 className='mx-auto block rounded-lg bg-[#ebe0cc] px-12 py-2 text-base font-bold text-[#0a0a0b]'
               >
-                查看探险结果
+                View results
               </button>
             )}
             {!data.farmingStatus && isSleeping && (
               <div className='flex h-[40px] items-center justify-center text-center text-xs leading-none'>
                 <div className='flex-1'>
-                  沉睡中，剩余时间：{formatCountdownMs(sleepCountdownMs)}
+                  Sleeping, remaining time:{' '}
+                  {formatCountdownMs(sleepCountdownMs)}
                 </div>
                 {timeReductionCardNum > 0 && (
                   <button
                     className='space-x-2 rounded-lg bg-[#ebe0cc] px-2 py-1 text-xs font-bold text-[#0a0a0b]'
                     onClick={doReduceSleepingTime}
                   >
-                    <span>减时卡</span>
+                    <span>Time Reduction Card</span>
                     <Tooltip
-                      title={`从盲盒获取，用于减少沉睡时间。剩余：【${timeReductionCardNum}】张。`}
+                      title={`Acquired from blind boxes, it's used to reduce sleep time. Remaining: ${timeReductionCardNum} cards.`}
                     >
                       <InfoCircleOutlined />
                     </Tooltip>
@@ -369,13 +370,13 @@ function LoongFarmingImage({
                   onClick={() => doRedeem()}
                   className='mx-auto block rounded-lg bg-[#ebe0cc] px-8 py-2 text-base font-bold text-[#0a0a0b]'
                 >
-                  赎回
+                  Redeem
                 </button>
                 <button
                   onClick={() => doFarming()}
                   className='mx-auto block rounded-lg bg-[#ebe0cc] px-8 py-2 text-base font-bold text-[#0a0a0b]'
                 >
-                  去探险
+                  Explore
                 </button>
               </div>
             )}
@@ -383,16 +384,16 @@ function LoongFarmingImage({
           <Modal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
-            title='探险结果'
+            title='Explore Results'
             className='!max-w-[380px]'
           >
             <>
               <div>{resultMessage}</div>
               <div className='mt-6 flex items-center justify-center space-x-8'>
-                <Button onClick={() => setIsModalOpen(false)}>确认</Button>
+                <Button onClick={() => setIsModalOpen(false)}>Confirm</Button>
                 <Link href='/treasure'>
                   <Button onClick={() => setIsModalOpen(false)}>
-                    查看盲盒
+                    View the treasure chest
                   </Button>
                 </Link>
               </div>
@@ -469,7 +470,9 @@ export default function Page() {
       {loading && <Loading />}
       <Header dark={true} />
       <div className='px-[5vw] md:px-[40px]'>
-        <h1 className='mb-4 text-2xl font-semibold'>你的神龙精灵朋友</h1>
+        <h1 className='mb-4 text-2xl font-semibold'>
+          Your divine loong sprite friend
+        </h1>
         <div className='flex h-[360px] flex-nowrap space-x-8 overflow-x-auto'>
           {greatLoongIds.map((id) => (
             <LoongImage
@@ -489,13 +492,15 @@ export default function Page() {
           ))}
           {!greatLoongIds.length && !babyLoongIds.length && (
             <div className='flex h-[360px] w-[100%] items-center justify-center text-xl text-white'>
-              你还没有龙龙哦~
+              You don&apos;t have a loong yet.
             </div>
           )}
         </div>
       </div>
       <div className='px-[5vw] md:px-[40px]'>
-        <h1 className='mb-4 text-2xl font-semibold'>你的探险龙精灵</h1>
+        <h1 className='mb-4 text-2xl font-semibold'>
+          Your explorer loong sprite
+        </h1>
         <div className='flex h-[360px] flex-nowrap space-x-8 overflow-x-auto'>
           {greatLoongFarmingDataList.map((data) => (
             <LoongFarmingImage
@@ -518,7 +523,7 @@ export default function Page() {
           {!greatLoongFarmingDataList.length &&
             !babyLoongFarmingDataList.length && (
               <div className='flex h-[360px] w-[100%] items-center justify-center text-xl text-white'>
-                你还没有探险龙龙哦~
+                You don&apos;t have an explorer loong yet.
               </div>
             )}
         </div>

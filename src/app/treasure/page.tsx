@@ -50,11 +50,11 @@ function BlindBox({
   const onClick = async () => {
     if (!walletProvider) return;
     if (!onOpen) {
-      message.info('敬请期待~');
+      message.info('Stay tuned.');
       return;
     }
     if (!num) {
-      message.warning('你还没有盲盒~');
+      message.warning(`You don't have a blind box yet.`);
       return;
     }
 
@@ -90,7 +90,7 @@ function BlindBox({
             onClick={onClick}
             className='mx-auto block rounded-lg bg-[#ebe0cc] px-12 py-2 text-base font-bold text-[#0a0a0b] disabled:cursor-not-allowed disabled:bg-opacity-50 disabled:text-gray-500'
           >
-            打开盲盒
+            Open
           </button>
         )}
       </div>
@@ -114,7 +114,7 @@ function OpenedTreasure() {
     if (!walletProvider) return;
     if (!farmingEthAmount) return;
     if (farmingEthAmount.ethToBeExtractedAmount === '0.0') {
-      message.warning('你没有待提取的ETH~');
+      message.warning('You have no ETH to be withdrawn.');
       return;
     }
     message.info('extracting...');
@@ -143,11 +143,13 @@ function OpenedTreasure() {
     const data = isGreatL ? greatFarmingTokenAmount : babyFarmingTokenAmount;
     if (!data) return;
     if (data.toBeExtractedAmount === 0) {
-      message.warning('你没有待提取的token~');
+      message.warning('You have no token to be withdrawn.');
       return;
     }
     if (toBeExtractedAmount > data.toBeExtractedAmount) {
-      message.warning('提取数量大于待提取数量');
+      message.warning(
+        'The withdrawal amount exceeds the amount available for withdrawal.'
+      );
       return;
     }
     message.info('extracting...');
@@ -206,22 +208,28 @@ function OpenedTreasure() {
   }, [walletProvider]);
 
   return (
-    <div className='mb-4 flex w-full max-w-[900px] flex-col space-y-6 pb-4 md:space-y-2'>
+    <div className='mb-4 flex w-full flex-col space-y-6 pb-4 md:space-y-2'>
       {/* 大龙 */}
-      <div className='flex flex-col items-center justify-between space-y-4 md:flex-row'>
-        <div className='flex items-center space-x-2 md:space-x-4'>
+      <div className='flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-x-4 '>
+        <div className='flex flex-col flex-wrap text-sm lg:flex-row lg:items-center lg:space-x-4'>
           <div>
-            大龙token：{greatFarmingTokenAmount?.farmingTokenAmount ?? '???'}
-          </div>
-          <div>已提取：{greatFarmingTokenAmount?.extractAmount ?? '???'}</div>
-          <div>
-            待提取：{greatFarmingTokenAmount?.toBeExtractedAmount ?? '???'}
+            Great Loong Token:{' '}
+            {greatFarmingTokenAmount?.farmingTokenAmount ?? '???'}
           </div>
           <div>
-            待提取解锁：
+            Withdrawn: {greatFarmingTokenAmount?.extractAmount ?? '???'}
+          </div>
+          <div>
+            Pending Withdrawal:
+            {greatFarmingTokenAmount?.toBeExtractedAmount ?? '???'}
+          </div>
+          <div>
+            Pending Unlock for Withdrawal:
             {greatFarmingTokenAmount?.toBeExtractedUnlockingAmount ?? '???'}
           </div>
-          <div>税收：{greatFarmingTokenAmount?.taxationAmount ?? '???'}</div>
+          <div>
+            Taxation: {greatFarmingTokenAmount?.taxationAmount ?? '???'}
+          </div>
         </div>
         <button
           onClick={() => openExtractFarmingTokenAmount(true)}
@@ -231,20 +239,22 @@ function OpenedTreasure() {
         </button>
       </div>
       {/* 小龙 */}
-      <div className='flex flex-col items-center justify-between space-y-4 md:flex-row'>
-        <div className='flex items-center space-x-2 md:space-x-4'>
+      <div className='flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-x-4 '>
+        <div className='flex flex-col flex-wrap text-sm lg:flex-row lg:items-center lg:space-x-4'>
           <div>
-            小龙token：{babyFarmingTokenAmount?.farmingTokenAmount ?? '???'}
+            Baby Loong Token:{' '}
+            {babyFarmingTokenAmount?.farmingTokenAmount ?? '???'}
           </div>
-          <div>已提取：{babyFarmingTokenAmount?.extractAmount ?? '???'}</div>
+          <div>Withdrawn: {babyFarmingTokenAmount?.extractAmount ?? '???'}</div>
           <div>
-            待提取：{babyFarmingTokenAmount?.toBeExtractedAmount ?? '???'}
+            Pending Withdrawal:{' '}
+            {babyFarmingTokenAmount?.toBeExtractedAmount ?? '???'}
           </div>
           <div>
-            待提取解锁：
+            Pending Unlock for Withdrawal:
             {babyFarmingTokenAmount?.toBeExtractedUnlockingAmount ?? '???'}
           </div>
-          <div>税收：{babyFarmingTokenAmount?.taxationAmount ?? '???'}</div>
+          <div>Taxation: {babyFarmingTokenAmount?.taxationAmount ?? '???'}</div>
         </div>
         <button
           onClick={() => openExtractFarmingTokenAmount(false)}
@@ -254,11 +264,14 @@ function OpenedTreasure() {
         </button>
       </div>
       {/* ETH */}
-      <div className='flex flex-col items-center justify-between space-y-4 md:flex-row'>
-        <div className='flex items-center space-x-2 md:space-x-4'>
-          <div>ETH：{farmingEthAmount?.ethAmount ?? '???'}</div>
-          <div>已提取：{farmingEthAmount?.ethExtractAmount ?? '???'}</div>
-          <div>待提取：{farmingEthAmount?.ethToBeExtractedAmount ?? '???'}</div>
+      <div className='flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-x-4 '>
+        <div className='flex flex-col flex-wrap text-sm lg:flex-row lg:items-center lg:space-x-4'>
+          <div>ETH: {farmingEthAmount?.ethAmount ?? '???'}</div>
+          <div>Withdrawn: {farmingEthAmount?.ethExtractAmount ?? '???'}</div>
+          <div>
+            Pending Withdrawn:
+            {farmingEthAmount?.ethToBeExtractedAmount ?? '???'}
+          </div>
         </div>
         <button
           disabled={!farmingEthAmount?.ethToBeExtractedAmount}
@@ -270,9 +283,9 @@ function OpenedTreasure() {
       </div>
 
       {/* 开光护身符 */}
-      <div className='flex flex-col items-center justify-between space-y-4 md:flex-row'>
-        <div className='flex items-center space-x-2 md:space-x-4'>
-          <div>开光护身符：{talismanNum ?? '???'}</div>
+      <div className='flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-x-4 '>
+        <div className='flex flex-col flex-wrap text-sm lg:flex-row lg:items-center lg:space-x-4'>
+          <div>Blessed Talisman: {talismanNum ?? '???'}</div>
         </div>
         <button
           disabled
@@ -281,16 +294,18 @@ function OpenedTreasure() {
           Claim
         </button>
       </div>
-      {/* <div className="flex items-center justify-center w-[100%] h-[360px] text-white text-xl">你还没有宝藏~</div> */}
+      {/* <div className="flex items-center justify-center w-[100%] h-[360px] text-white text-xl">You don't have treasure yet.</div> */}
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={isGreatClaiming ? 'Great Loong Claim' : 'Baby Loong Claim'}
+        title={
+          isGreatClaiming ? 'Great Loong Token Claim' : 'Baby Loong Token Claim'
+        }
         className='!max-w-[380px]'
       >
         <div className='space-y-2'>
           <div>
-            提取（Max:{' '}
+            Withdrawn（Max:{' '}
             {(isGreatClaiming
               ? greatFarmingTokenAmount?.toBeExtractedAmount
               : babyFarmingTokenAmount?.toBeExtractedAmount) ?? '???'}
@@ -305,25 +320,24 @@ function OpenedTreasure() {
                 : babyFarmingTokenAmount?.toBeExtractedAmount
             }
             className='h-12 w-full rounded-lg border border-solid border-gray-500 bg-white px-4 py-2'
-            placeholder='输入提取数量'
           />
         </div>
         <div className='mt-4 text-sm text-gray-700'>
-          金额大于待提解锁（
+          The amount is greater than the pending unlock for withdrawal(
           {(isGreatClaiming
             ? greatFarmingTokenAmount?.toBeExtractedUnlockingAmount
             : babyFarmingTokenAmount?.toBeExtractedUnlockingAmount) ?? '???'}
-          ）将产生税收
+          ), which will generate tax revenue
         </div>
         <div className='mt-6 flex items-center justify-center space-x-8'>
           <Button
             onClick={() => setIsModalOpen(false)}
             className='!border !border-solid !border-gray-500 !bg-white !text-[#6b6c6e]'
           >
-            取消
+            Cancel
           </Button>
           <Button onClick={() => doExtractFarmingTokenAmount(isGreatClaiming)}>
-            提取
+            Claim
           </Button>
         </div>
       </Modal>
@@ -374,11 +388,11 @@ export default function Page() {
       {loading && <Loading />}
       <Header dark={true} />
       <div className='px-[5vw] md:px-[40px]'>
-        <h1 className='mb-4 text-2xl font-semibold'>未开启的宝藏</h1>
+        <h1 className='mb-4 text-2xl font-semibold'>Unopened Treasure</h1>
         <div className='mb-4 flex flex-nowrap space-x-16 overflow-x-auto pb-4'>
           {(userUnopenedBlindBox.ethBlindBox > 0 || showBlindBox) && (
             <BlindBox
-              name='以太盲盒'
+              name='ETH Blind Box'
               num={userUnopenedBlindBox.ethBlindBox}
               image={TreasureImage}
               onOpen={claimEthBlindBox}
@@ -386,7 +400,7 @@ export default function Page() {
           )}
           {(userUnopenedBlindBox.loongTokenBlindBox > 0 || showBlindBox) && (
             <BlindBox
-              name='精灵碎片盲盒'
+              name='Loong Token Blind Box'
               num={userUnopenedBlindBox.loongTokenBlindBox}
               image={TreasureImage2}
               onOpen={claimLoongTokenBlindBox}
@@ -395,7 +409,7 @@ export default function Page() {
           {(userUnopenedBlindBox.equipBlindBox > 0 || showBlindBox) && (
             <BlindBox
               disabled
-              name='神龙装备盲盒'
+              name='Equipment Blind Box'
               num={userUnopenedBlindBox.equipBlindBox}
               image={TreasureImage3}
               onOpen={openBlindBox}
@@ -404,7 +418,7 @@ export default function Page() {
           {(userUnopenedBlindBox.aUBlindBox > 0 || showBlindBox) && (
             <BlindBox
               disabled
-              name='星球盲盒'
+              name='AU Blind Box'
               num={userUnopenedBlindBox.aUBlindBox}
               image={TreasureImage4}
               onOpen={openBlindBox}
@@ -416,26 +430,26 @@ export default function Page() {
             userUnopenedBlindBox.equipBlindBox === 0 &&
             userUnopenedBlindBox.aUBlindBox === 0 && (
               <div className='flex h-[360px] w-[100%] items-center justify-center text-xl text-white'>
-                你还没有盲盒~
+                You still don&apos;t have a blind box.
               </div>
             )}
         </div>
       </div>
 
       <div className='px-[5vw] md:px-[40px]'>
-        <h1 className='mb-4 text-2xl font-semibold'>已获取的宝藏</h1>
+        <h1 className='mb-4 text-2xl font-semibold'>Acquired Treasure</h1>
         <OpenedTreasure />
       </div>
 
       <div className='px-[5vw] md:px-[40px]'>
-        <h1 className='mb-4 text-2xl font-semibold'>道具</h1>
+        <h1 className='mb-4 text-2xl font-semibold'>Item</h1>
         <div className='flex h-[360px] flex-nowrap space-x-8 overflow-x-auto pb-4'>
           <BlindBox
-            name='沉睡减时卡【3天】'
+            name='Sleep Time Reduction Card[3 Days]'
             num={timeReductionCardNum}
             image={TreasureImage5}
           />
-          {/* <div className="flex items-center justify-center w-[100%] h-[360px] text-white text-xl">你还没有道具~</div> */}
+          {/* <div className="flex items-center justify-center w-[100%] h-[360px] text-white text-xl">You don't have any items yet.</div> */}
         </div>
       </div>
     </div>
