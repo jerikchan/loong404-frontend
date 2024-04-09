@@ -36,7 +36,7 @@ export const loongApproveFarming = async (
 ) => {
   const contract = await getLoongContract(isGreatL, walletProvider);
   const tx = await contract.approve(
-    getLoongFarmingAddress(isGreatL),
+    chain.contract.farmingDataStrongAddr,
     ethers.parseUnits(id, 'wei')
   );
   await tx.wait();
@@ -81,32 +81,13 @@ export const getLoongFarmingResult = async (
   );
   const receipt = <ethers.TransactionReceipt>await tx.wait();
   const data = <[bigint, bigint, bigint, bigint]>(
-    (<ethers.EventLog>receipt.logs[0]).args.toArray()
+    (<ethers.EventLog>receipt.logs.at(-1)).args.toArray()
   );
   const result: ILoongFarmingResult = {
     id: ethers.formatUnits(data[0], 'wei'),
-    farmingEndTime: weiToDate(data[1]),
+    // farmingEndTime: weiToDate(data[1]),
+    farmingResult: ethers.formatUnits(data[1], 'wei') as IFarmingResult,
     farmingReward: ethers.formatUnits(data[2], 'wei') as IFarmingReward,
-    farmingResult: ethers.formatUnits(data[3], 'wei') as IFarmingResult,
-  };
-  return result;
-};
-
-export const userLoongFarmings = async (
-  walletProvider: Eip1193Provider,
-  id: string
-) => {
-  const contract = await getLoongFarmingContract(true, walletProvider);
-  const data: [bigint, bigint, bigint, bigint] =
-    await contract.userDragonFarmings(
-      await contract.getAddress(),
-      ethers.parseUnits(id, 'wei')
-    );
-  const result: ILoongFarmingResult = {
-    id: ethers.formatUnits(data[0], 'wei'),
-    farmingEndTime: weiToDate(data[1]),
-    farmingReward: ethers.formatUnits(data[2], 'wei') as IFarmingReward,
-    farmingResult: ethers.formatUnits(data[3], 'wei') as IFarmingResult,
   };
   return result;
 };
@@ -116,8 +97,7 @@ export const getUserUnopenedBlindBox = async (
   isGreatL: boolean
 ) => {
   const contract = await getLoongFarmingContract(isGreatL, walletProvider);
-  const data: [bigint, bigint, bigint, bigint] =
-    await contract.getUserUnopenedBlindBox();
+  const data: ethers.Result = await contract.getUserUnopenedBlindBox();
   const result: IUnopenedBlindBox = {
     ethBlindBox: Number(ethers.formatUnits(data[0], 'wei')),
     loongTokenBlindBox: Number(ethers.formatUnits(data[1], 'wei')),
@@ -155,10 +135,13 @@ export const reduceSleepingTime = async (
 };
 
 export const claimLoongTokenBlindBox = async (
-  walletProvider: Eip1193Provider
+  walletProvider: Eip1193Provider,
+  isGreatL: boolean
 ) => {
-  const contract = await getLoongFarmingContract(true, walletProvider);
-  await contract.claimLongTokenBlindBox();
+  const contract = await getLoongFarmingContract(isGreatL, walletProvider);
+  const data = await contract.claimLongTokenBlindBox();
+  debugger;
+  return data;
 };
 
 export const extractFarmingTokenAmount = async (
@@ -167,9 +150,9 @@ export const extractFarmingTokenAmount = async (
   isGreatL: boolean
 ) => {
   const contract = await getLoongFarmingContract(isGreatL, walletProvider);
-  await contract.extractFarmingTokenAmount(
-    ethers.parseUnits(String(amount), 'wei')
-  );
+  const wei = ethers.parseUnits(String(amount), 'ether');
+  debugger;
+  await contract.extractFarmingTokenAmount(wei);
 };
 
 export const getFarmingTokenAmount = async (

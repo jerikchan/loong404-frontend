@@ -90,6 +90,7 @@ export const getBalanceLoong = async (walletProvider, isGreateL) => {
   );
   const balance = await contract.balanceOf(signer.getAddress());
   const balanceStr = ethers.formatEther(balance);
+  debugger;
   return balanceStr.toString();
 };
 

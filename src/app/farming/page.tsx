@@ -10,10 +10,9 @@ import {
   redeemLoong,
   getTimeReductionCardNum,
   reduceSleepingTime,
-  userLoongFarmings,
 } from '@/utils/farming';
 import { useWeb3ModalProvider } from '@web3modal/ethers/react';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
 import {
   getGreatLoongImageData,
   getBabyLoongImageData,
@@ -150,11 +149,13 @@ function LoongFarmingImage({
   data,
   isGreatL,
   onSuccess,
+  onError,
   timeReductionCardNum,
 }: {
   data: ILoongFarmingData;
   isGreatL: boolean;
   onSuccess?: () => void;
+  onError?: () => void;
   timeReductionCardNum: number;
 }) {
   const { walletProvider } = useWeb3ModalProvider();
@@ -179,6 +180,7 @@ function LoongFarmingImage({
       store.dispatch(saveLoading(false));
       message.error(extractReason((e as Error).message) || 'farming failed.');
       console.error(e);
+      onError?.();
       return;
     }
   };
@@ -193,6 +195,7 @@ function LoongFarmingImage({
         data.id,
         isGreatL
       );
+      console.log('result:', result, 'isGreatL:', isGreatL);
       setFarmingResult(result);
 
       store.dispatch(saveLoading(false));
@@ -262,14 +265,24 @@ function LoongFarmingImage({
   let resultMessage = 'loading...';
   if (farmingResult) {
     if (farmingResult.farmingResult === '1') {
-      if (farmingResult.farmingReward === '2') {
+      if (farmingResult.farmingReward === '0') {
+        // nothing
+        resultMessage = `Although it's a bit awkward, this expedition was uneventful, which might also be considered a kind of luck~:)`;
+      } else if (farmingResult.farmingReward === '2') {
+        // eth
         resultMessage = `I found this in the cyber world, it seems quite valuable, it's all yours now.`;
       } else if (farmingResult.farmingReward === '3') {
+        // token
         resultMessage = `I found Loong God energy fragments scattered in the cyber world! Collecting a certain amount can summon my kinfolk.`;
       } else {
+        // others
         resultMessage = `Hey! Look what I brought? Humans seem to call this a blind box!`;
       }
+    } else if (farmingResult.farmingResult === '3') {
+      // sleep
+      resultMessage = `I can't imagine there's such a powerful evil spirit in the Cyber World, my father destroyed it and now he's going into seclusion to recuperate`;
     } else {
+      // fail
       resultMessage = `Although it's a bit awkward, this expedition was uneventful, which might also be considered a kind of luck~:)`;
     }
   }
@@ -413,14 +426,19 @@ export default function Page() {
   >([]);
   const [refresh, setRefresh] = useState(0);
   const loading = useSelector(({ loading }: { loading: boolean }) => loading);
-  const [timeReductionCardNum, setTimeReductionCardNum] = useState(0);
+  const [timeReductionCardNumGreat, setTimeReductionCardNumGreat] = useState(0);
+  const [timeReductionCardNumBaby, setTimeReductionCardNumBaby] = useState(0);
 
   useEffect(() => {
     const fetchTimeReductionCardNum = async () => {
       if (!walletProvider) return;
       // 不分大小龙，随便取一个，取大龙的
-      const num = await getTimeReductionCardNum(walletProvider, true);
-      setTimeReductionCardNum(num);
+      const [numGreat, numBaby] = await Promise.all([
+        getTimeReductionCardNum(walletProvider, true),
+        getTimeReductionCardNum(walletProvider, false),
+      ]);
+      setTimeReductionCardNumGreat(numGreat);
+      setTimeReductionCardNumBaby(numBaby);
     };
     fetchTimeReductionCardNum();
   }, [walletProvider]);
@@ -456,9 +474,12 @@ export default function Page() {
     fetchLoongFarmingList();
   }, [walletProvider, refresh]);
 
-  const delayCallback = (callback: () => void, delay?: number) => {
-    setTimeout(callback, delay || 1000);
-  };
+  const delayRefresh = useCallback(() => {
+    const tick = setTimeout(() => {
+      setRefresh(refresh + 1);
+    }, 1000);
+    return () => clearTimeout(tick);
+  }, [refresh]);
 
   return (
     <div className='min-h-screen bg-[#533837] pt-32'>
@@ -474,7 +495,7 @@ export default function Page() {
               key={id}
               id={id}
               isGreatL={true}
-              onSuccess={() => delayCallback(() => setRefresh(refresh + 1))}
+              onSuccess={() => delayRefresh()}
             />
           ))}
           {babyLoongIds.map((id) => (
@@ -482,7 +503,7 @@ export default function Page() {
               key={id}
               id={id}
               isGreatL={false}
-              onSuccess={() => delayCallback(() => setRefresh(refresh + 1))}
+              onSuccess={() => delayRefresh()}
             />
           ))}
           {!greatLoongIds.length && !babyLoongIds.length && (
@@ -502,8 +523,9 @@ export default function Page() {
               key={data.id}
               data={data}
               isGreatL={true}
-              timeReductionCardNum={timeReductionCardNum}
-              onSuccess={() => delayCallback(() => setRefresh(refresh + 1))}
+              timeReductionCardNum={timeReductionCardNumGreat}
+              onSuccess={() => delayRefresh()}
+              onError={() => delayRefresh()}
             />
           ))}
           {babyLoongFarmingDataList.map((data) => (
@@ -511,8 +533,9 @@ export default function Page() {
               key={data.id}
               data={data}
               isGreatL={false}
-              timeReductionCardNum={timeReductionCardNum}
-              onSuccess={() => delayCallback(() => setRefresh(refresh + 1))}
+              timeReductionCardNum={timeReductionCardNumBaby}
+              onSuccess={() => delayRefresh()}
+              onError={() => delayRefresh()}
             />
           ))}
           {!greatLoongFarmingDataList.length &&

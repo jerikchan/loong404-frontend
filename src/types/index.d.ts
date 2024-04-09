@@ -28,22 +28,24 @@ export interface ILoongFarmingData {
 }
 
 /**
+ * 1 成功
+ * 2 失败
+ * 3 睡眠
+ */
+export type IFarmingResult = '1' | '2' | '3';
+
+/**
+ * 0 无
  * 1 开光符
  * 2 eth 盲盒
  * 3 token 盲盒
  * 4 装备盲盒
  * 5 au 盲盒
  */
-export type IFarmingReward = '1' | '2' | '3' | '4' | '5';
-/**
- * 1 成功
- * 2 失败
- * 3 睡眠
- */
-export type IFarmingResult = '1' | '2' | '3';
+export type IFarmingReward = '0' | '1' | '2' | '3' | '4' | '5';
 export interface ILoongFarmingResult {
   id: string;
-  farmingEndTime: Date;
+  // farmingEndTime: Date;
   farmingReward: IFarmingReward;
   farmingResult: IFarmingResult;
 }
