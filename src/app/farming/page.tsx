@@ -352,8 +352,8 @@ function LoongFarmingImage({
               </button>
             )}
             {!data.farmingStatus && isSleeping && (
-              <div className='flex h-[40px] items-center justify-center text-center text-xs leading-none'>
-                <div className='flex-1'>
+              <div className='flex h-[40px] flex-col items-center justify-center space-y-2 text-center text-xs leading-none'>
+                <div className=''>
                   Sleeping, remaining time:{' '}
                   {formatCountdownMs(sleepCountdownMs)}
                 </div>
@@ -441,7 +441,7 @@ export default function Page() {
       setTimeReductionCardNumBaby(numBaby);
     };
     fetchTimeReductionCardNum();
-  }, [walletProvider]);
+  }, [walletProvider, refresh]);
 
   useEffect(() => {
     const fetchLoongList = async () => {
@@ -450,6 +450,8 @@ export default function Page() {
         getUserLoongList(walletProvider, true),
         getUserLoongList(walletProvider, false),
       ]);
+      console.log('greatLoongIds:', greatLoongIds);
+      console.log('babyLoongIds:', babyLoongIds);
       setGreatLoongIds(greatLoongIds);
       setBabyLoongIds(babyLoongIds);
     };
@@ -467,8 +469,12 @@ export default function Page() {
         ]);
       console.log('greatLoongFarmingDataList:', greatLoongFarmingDataList);
       console.log('babyLoongFarmingDataList:', babyLoongFarmingDataList);
-      setGreatLoongFarmingDataList(greatLoongFarmingDataList);
-      setBabyLoongFarmingDataList(babyLoongFarmingDataList);
+      setGreatLoongFarmingDataList(
+        greatLoongFarmingDataList.filter((item) => item.id !== '0')
+      );
+      setBabyLoongFarmingDataList(
+        babyLoongFarmingDataList.filter((item) => item.id !== '0')
+      );
     };
 
     fetchLoongFarmingList();

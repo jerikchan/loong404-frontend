@@ -44,10 +44,15 @@ export const Arbitrum_Sepolia = {
     swapAddress: '0x3FBad78aFC873920F00E7d4373cb59AABa3cB57a',
     dataAddress: '0xb0a2291Bb9B2B14122C509A719Af124199ae0cC7',
     // greatLFarmingAddr: '0xE20e2EdBb15635c9913ac10D91c717018a82fc71',
-    greatLFarmingAddr: '0x577f47Aa7A310C59C15a8be9F2e31fC3Da41533E',
     // babyLFarmingAddr: '0x376fB81695D3CA27F0A4324f7EbEE2980Fabd785',
-    babyLFarmingAddr: '0x8e9DC73e5CC7F38Aef15FD0f17B48e0Cc859E4D9',
-    farmingDataStrongAddr: '0xC21fB21487849D7C3bb221D03Dee228eC0819E57',
+    // greatLFarmingAddr: '0x577f47Aa7A310C59C15a8be9F2e31fC3Da41533E',
+    // babyLFarmingAddr: '0x8e9DC73e5CC7F38Aef15FD0f17B48e0Cc859E4D9',
+    // farmingDataStrongAddr: '0xC21fB21487849D7C3bb221D03Dee228eC0819E57',
+    // greatLFarmingAddr: '0x153d75112CfBCA2d45e8530616A2448B33e90B09',
+    // babyLFarmingAddr: '0x70fb775C1d00ec57D7424B41d9bB3b2253441D5B',
+    greatLFarmingAddr: '0x641b01EcF2425bfc04eD57f416178D249f702759',
+    babyLFarmingAddr: '0x4aEc18927Ca4cFcaBd73f4A3B9A8C102BD087cFD',
+    farmingDataStrongAddr: '0xC832720288713401718a3A7F5DaED99Ac83AB26a',
   },
 };
 

@@ -42,12 +42,14 @@ function BlindBox({
   image,
   onOpen,
   disabled,
+  desc,
 }: {
   num: number;
   name: string;
   image: StaticImageData;
   onOpen?: () => Promise<void>;
   disabled?: boolean;
+  desc?: string;
 }) {
   const { walletProvider } = useWeb3ModalProvider();
   const onClick = async () => {
@@ -87,6 +89,9 @@ function BlindBox({
         <div className='text-center text-xs leading-none'>
           {name} * {num ?? '???'}
         </div>
+        {desc && (
+          <div className='mt-2 text-center text-xs leading-none'>{desc}</div>
+        )}
         {!!onOpen && (
           <button
             disabled={disabled}
@@ -170,6 +175,7 @@ function OpenedTreasure({
         isGreatL
       );
       message.success('extract success!');
+      setIsModalOpen(false);
       onRefresh?.();
     } catch (e) {
       message.error(extractReason((e as Error).message) || 'extract failed.');
@@ -391,14 +397,18 @@ export default function Page() {
         getTimeReductionCardNum(walletProvider, true),
         getTimeReductionCardNum(walletProvider, false),
       ]);
+      console.log('get time reduction card num:', numGreat, numBaby);
       setTimeReductionCardNumGreat(numGreat);
-      setTimeReductionCardNumGreat(numBaby);
+      setTimeReductionCardNumBaby(numBaby);
     };
     fetchTimeReductionCardNum();
   }, [walletProvider, refresh]);
 
   const onRefresh = useCallback(() => {
-    setRefresh(refresh + 1);
+    const tick = setTimeout(() => {
+      setRefresh(refresh + 1);
+    }, 1000);
+    return () => clearTimeout(tick);
   }, [refresh]);
 
   const openBlindBox = async () => {
@@ -509,11 +519,13 @@ export default function Page() {
         <div className='flex h-[360px] flex-nowrap space-x-8 overflow-x-auto pb-4'>
           <BlindBox
             name='Sleep Time Reduction Card[3 Days]'
+            desc='(Great Loong)'
             num={timeReductionCardNumGreat}
             image={TreasureImage5}
           />
           <BlindBox
             name='Sleep Time Reduction Card[3 Days]'
+            desc='(Baby Loong)'
             num={timeReductionCardNumBaby}
             image={TreasureImage7}
           />
