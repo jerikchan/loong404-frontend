@@ -150,9 +150,12 @@ export const extractFarmingTokenAmount = async (
   isGreatL: boolean
 ) => {
   const contract = await getLoongFarmingContract(isGreatL, walletProvider);
-  const wei = ethers.parseUnits(String(amount), 'ether');
   debugger;
+  const wei = ethers.parseUnits(String(amount), 'wei');
+  // const wei = ethers.parseUnits(String(amount), 'ether');
   await contract.extractFarmingTokenAmount(wei);
+  // await contract.extractFarmingTokenAmount(amount);
+  // await contract.extractFarmingTokenAmount(String(amount));
 };
 
 export const getFarmingTokenAmount = async (
