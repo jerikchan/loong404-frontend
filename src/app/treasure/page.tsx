@@ -90,7 +90,9 @@ function BlindBox({
           {name} * {num ?? '???'}
         </div>
         {desc && (
-          <div className='mt-2 text-center text-xs leading-none'>{desc}</div>
+          <div className='mt-2 text-center text-xs leading-none text-gray-400'>
+            {desc}
+          </div>
         )}
         {!!onOpen && (
           <button
@@ -452,8 +454,10 @@ export default function Page() {
           {(userUnopenedBlindBoxGreat.ethBlindBox > 0 || showBlindBox) && (
             <BlindBox
               name='ETH Blind Box'
+              desc='(from Great Loong)'
               num={userUnopenedBlindBoxGreat.ethBlindBox}
               image={TreasureImage}
+              disabled={userUnopenedBlindBoxGreat.ethBlindBox === 0}
               onOpen={() => doClaimEthBlindBox()}
             />
           )}
@@ -461,8 +465,10 @@ export default function Page() {
             showBlindBox) && (
             <BlindBox
               name='Great Loong Token Blind Box'
+              desc='(from Great Loong)'
               num={userUnopenedBlindBoxGreat.loongTokenBlindBox}
               image={TreasureImage2}
+              disabled={userUnopenedBlindBoxGreat.loongTokenBlindBox === 0}
               onOpen={() => doClaimLoongTokenBlindBox(true)}
             />
           )}
@@ -470,8 +476,10 @@ export default function Page() {
             showBlindBox) && (
             <BlindBox
               name='Baby Loong Token Blind Box'
+              desc='(from Baby Loong)'
               num={userUnopenedBlindBoxBaby.loongTokenBlindBox}
               image={TreasureImage6}
+              disabled={userUnopenedBlindBoxBaby.loongTokenBlindBox === 0}
               onOpen={() => doClaimLoongTokenBlindBox(false)}
             />
           )}
@@ -479,6 +487,7 @@ export default function Page() {
             <BlindBox
               disabled
               name='Equipment Blind Box'
+              desc='(from Great Loong)'
               num={userUnopenedBlindBoxGreat.equipBlindBox}
               image={TreasureImage3}
               onOpen={openBlindBox}
@@ -488,6 +497,7 @@ export default function Page() {
             <BlindBox
               disabled
               name='AU Blind Box'
+              desc='(from Baby Loong)'
               num={userUnopenedBlindBoxBaby.aUBlindBox}
               image={TreasureImage4}
               onOpen={openBlindBox}
@@ -519,13 +529,13 @@ export default function Page() {
         <div className='flex h-[360px] flex-nowrap space-x-8 overflow-x-auto pb-4'>
           <BlindBox
             name='Sleep Time Reduction Card[3 Days]'
-            desc='(Great Loong)'
+            desc='(for Great Loong)'
             num={timeReductionCardNumGreat}
             image={TreasureImage5}
           />
           <BlindBox
             name='Sleep Time Reduction Card[3 Days]'
-            desc='(Baby Loong)'
+            desc='(for Baby Loong)'
             num={timeReductionCardNumBaby}
             image={TreasureImage7}
           />

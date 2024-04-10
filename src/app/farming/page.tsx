@@ -38,6 +38,14 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 import Link from 'next/link';
 
+function Skeleton({ className }: { className?: string }) {
+  return (
+    <div
+      className={`animate-pulse rounded-xl [background-color:hsl(240_4.8%_95.9%)] ${className}`}
+    ></div>
+  );
+}
+
 function LoongImage({
   id,
   isGreatL,
@@ -50,6 +58,7 @@ function LoongImage({
   const { walletProvider } = useWeb3ModalProvider();
   const [data, setData] = useState<ILoongImageData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [url, setUrl] = useState<string>('');
 
   const doFarming = async () => {
     if (!walletProvider) return;
@@ -61,7 +70,7 @@ function LoongImage({
       message.success('approve success!');
     } catch (e) {
       store.dispatch(saveLoading(false));
-      message.error('approve failed.');
+      message.error(extractReason((e as Error).message) || 'approve failed.');
       console.error(e);
       return;
     }
@@ -75,7 +84,7 @@ function LoongImage({
       onSuccess?.();
     } catch (e) {
       store.dispatch(saveLoading(false));
-      message.error('farming failed.');
+      message.error(extractReason((e as Error).message) || 'farming failed.');
       console.error(e);
       return;
     }
@@ -97,18 +106,31 @@ function LoongImage({
     fetchData();
   }, [getLoongImageData, id]);
 
+  useEffect(() => {
+    const doGetLoongImageUrl = async () => {
+      if (!data) return;
+      const url = await getLoongImageUrl(data.image);
+      setUrl(url);
+    };
+    doGetLoongImageUrl();
+  }, [data, getLoongImageUrl]);
+
   return (
-    <Suspense fallback={null}>
+    <>
       {data && (
         <div className='shrink-0 space-y-3 pb-8'>
           <div className='overflow-hidden rounded-md'>
-            <Image
-              src={getLoongImageUrl(data.image)}
-              width={256}
-              height={256}
-              alt={data.name}
-              className='object-cover transition-all hover:scale-105'
-            />
+            {url ? (
+              <Image
+                src={url}
+                width={256}
+                height={256}
+                alt={data.name}
+                className='object-cover transition-all hover:scale-105'
+              />
+            ) : (
+              <Skeleton className='h-[256px] w-[256px]' />
+            )}
           </div>
           <div className='space-y-2 text-sm'>
             <div className='text-center text-xs leading-none'>{data.name}</div>
@@ -141,7 +163,23 @@ function LoongImage({
           </Modal>
         </div>
       )}
-    </Suspense>
+    </>
+  );
+}
+
+function LoongImageSkeleton() {
+  return (
+    <div className='shrink-0 space-y-3 pb-8'>
+      <Skeleton className='h-[256px] w-[256px]' />
+      <div>
+        <div className='mt-2 px-16'>
+          <Skeleton className='h-[12px] w-full' />
+        </div>
+        <div className='mt-2 px-4'>
+          <Skeleton className='h-[40px] w-full' />
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -165,6 +203,7 @@ function LoongFarmingImage({
     useState<ILoongFarmingResult | null>(null);
   const [farmingCountdownMs, setFarmingCountdownMs] = useState(0);
   const [sleepCountdownMs, setSleepCountdownMs] = useState(0);
+  const [url, setUrl] = useState('');
 
   const doFarmingAgain = async () => {
     if (!walletProvider) return;
@@ -189,7 +228,6 @@ function LoongFarmingImage({
     if (!walletProvider) return;
     store.dispatch(saveLoading(true));
     try {
-      // 调用探险结果交互，不会返回数据结果数据
       const result = await getLoongFarmingResult(
         walletProvider,
         data.id,
@@ -201,7 +239,6 @@ function LoongFarmingImage({
       store.dispatch(saveLoading(false));
       message.success('get farming result success!');
       setIsModalOpen(true);
-      onSuccess?.();
     } catch (e) {
       store.dispatch(saveLoading(false));
       message.error(
@@ -210,6 +247,10 @@ function LoongFarmingImage({
       console.error(e);
       return;
     }
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+    onSuccess?.();
   };
 
   const doRedeem = async () => {
@@ -261,6 +302,15 @@ function LoongFarmingImage({
 
     fetchData();
   }, [getLoongImageData, data]);
+
+  useEffect(() => {
+    const doGetLoongImageUrl = async () => {
+      if (!imageData) return;
+      const url = await getLoongImageUrl(imageData.image);
+      setUrl(url);
+    };
+    doGetLoongImageUrl();
+  }, [imageData, getLoongImageUrl]);
 
   let resultMessage = 'loading...';
   if (farmingResult) {
@@ -321,17 +371,21 @@ function LoongFarmingImage({
   }, [data.sleepEndTime]);
 
   return (
-    <Suspense fallback={null}>
+    <div className='shrink-0 space-y-3 pb-8'>
       {data && imageData && (
-        <div className='shrink-0 space-y-3 pb-8'>
+        <>
           <div className='overflow-hidden rounded-md'>
-            <Image
-              src={getLoongImageUrl(imageData.image)}
-              width={256}
-              height={256}
-              alt={imageData.name}
-              className='object-cover transition-all hover:scale-105'
-            />
+            {url ? (
+              <Image
+                src={url}
+                width={256}
+                height={256}
+                alt={imageData.name}
+                className='object-cover transition-all hover:scale-105'
+              />
+            ) : (
+              <Skeleton className='h-[256px] w-[256px]' />
+            )}
           </div>
           <div className='space-y-2 text-sm'>
             <div className='text-center text-xs leading-none'>
@@ -391,25 +445,23 @@ function LoongFarmingImage({
           </div>
           <Modal
             isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
+            onClose={closeModal}
             title='Explore Results'
             className='!max-w-[480px]'
           >
             <>
               <div>{resultMessage}</div>
               <div className='mt-6 flex items-center justify-center space-x-8'>
-                <Button onClick={() => setIsModalOpen(false)}>Confirm</Button>
+                <Button onClick={closeModal}>Confirm</Button>
                 <Link href='/treasure'>
-                  <Button onClick={() => setIsModalOpen(false)}>
-                    View treasure
-                  </Button>
+                  <Button>View treasure</Button>
                 </Link>
               </div>
             </>
           </Modal>
-        </div>
+        </>
       )}
-    </Suspense>
+    </div>
   );
 }
 
@@ -428,6 +480,9 @@ export default function Page() {
   const loading = useSelector(({ loading }: { loading: boolean }) => loading);
   const [timeReductionCardNumGreat, setTimeReductionCardNumGreat] = useState(0);
   const [timeReductionCardNumBaby, setTimeReductionCardNumBaby] = useState(0);
+  const [loadingLoongIds, setLoadingLoongIds] = useState(true);
+  const [loadingLoongFarmingDataList, setLoadingLoongFarmingDataList] =
+    useState(true);
 
   useEffect(() => {
     const fetchTimeReductionCardNum = async () => {
@@ -446,6 +501,7 @@ export default function Page() {
   useEffect(() => {
     const fetchLoongList = async () => {
       if (!walletProvider) return;
+      setLoadingLoongIds(true);
       const [greatLoongIds, babyLoongIds] = await Promise.all([
         getUserLoongList(walletProvider, true),
         getUserLoongList(walletProvider, false),
@@ -454,6 +510,7 @@ export default function Page() {
       console.log('babyLoongIds:', babyLoongIds);
       setGreatLoongIds(greatLoongIds);
       setBabyLoongIds(babyLoongIds);
+      setLoadingLoongIds(false);
     };
 
     fetchLoongList();
@@ -462,6 +519,7 @@ export default function Page() {
   useEffect(() => {
     const fetchLoongFarmingList = async () => {
       if (!walletProvider) return;
+      setLoadingLoongFarmingDataList(true);
       const [greatLoongFarmingDataList, babyLoongFarmingDataList] =
         await Promise.all([
           getUserLoongFarmingList(walletProvider, true),
@@ -475,6 +533,7 @@ export default function Page() {
       setBabyLoongFarmingDataList(
         babyLoongFarmingDataList.filter((item) => item.id !== '0')
       );
+      setLoadingLoongFarmingDataList(false);
     };
 
     fetchLoongFarmingList();
@@ -496,26 +555,36 @@ export default function Page() {
           Your divine loong sprite friend
         </h1>
         <div className='flex h-[360px] flex-nowrap space-x-8 overflow-x-auto'>
-          {greatLoongIds.map((id) => (
-            <LoongImage
-              key={id}
-              id={id}
-              isGreatL={true}
-              onSuccess={() => delayRefresh()}
-            />
-          ))}
-          {babyLoongIds.map((id) => (
-            <LoongImage
-              key={id}
-              id={id}
-              isGreatL={false}
-              onSuccess={() => delayRefresh()}
-            />
-          ))}
-          {!greatLoongIds.length && !babyLoongIds.length && (
-            <div className='flex h-[360px] w-[100%] items-center justify-center text-xl text-white'>
-              You don&apos;t have a loong yet.
-            </div>
+          {!loadingLoongIds ? (
+            <>
+              {greatLoongIds.map((id) => (
+                <LoongImage
+                  key={id}
+                  id={id}
+                  isGreatL={true}
+                  onSuccess={() => delayRefresh()}
+                />
+              ))}
+              {babyLoongIds.map((id) => (
+                <LoongImage
+                  key={id}
+                  id={id}
+                  isGreatL={false}
+                  onSuccess={() => delayRefresh()}
+                />
+              ))}
+              {!greatLoongIds.length && !babyLoongIds.length && (
+                <div className='flex h-[360px] w-[100%] items-center justify-center text-xl text-white'>
+                  You don&apos;t have a loong yet.
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              {[1, 2, 3, 4, 5].map((i) => (
+                <LoongImageSkeleton key={i} />
+              ))}
+            </>
           )}
         </div>
       </div>
@@ -524,32 +593,42 @@ export default function Page() {
           Your explorer loong sprite
         </h1>
         <div className='flex h-[360px] flex-nowrap space-x-8 overflow-x-auto'>
-          {greatLoongFarmingDataList.map((data) => (
-            <LoongFarmingImage
-              key={data.id}
-              data={data}
-              isGreatL={true}
-              timeReductionCardNum={timeReductionCardNumGreat}
-              onSuccess={() => delayRefresh()}
-              onError={() => delayRefresh()}
-            />
-          ))}
-          {babyLoongFarmingDataList.map((data) => (
-            <LoongFarmingImage
-              key={data.id}
-              data={data}
-              isGreatL={false}
-              timeReductionCardNum={timeReductionCardNumBaby}
-              onSuccess={() => delayRefresh()}
-              onError={() => delayRefresh()}
-            />
-          ))}
-          {!greatLoongFarmingDataList.length &&
-            !babyLoongFarmingDataList.length && (
-              <div className='flex h-[360px] w-[100%] items-center justify-center text-xl text-white'>
-                You don&apos;t have an explorer loong yet.
-              </div>
-            )}
+          {!loadingLoongFarmingDataList ? (
+            <>
+              {greatLoongFarmingDataList.map((data) => (
+                <LoongFarmingImage
+                  key={data.id}
+                  data={data}
+                  isGreatL={true}
+                  timeReductionCardNum={timeReductionCardNumGreat}
+                  onSuccess={() => delayRefresh()}
+                  onError={() => delayRefresh()}
+                />
+              ))}
+              {babyLoongFarmingDataList.map((data) => (
+                <LoongFarmingImage
+                  key={data.id}
+                  data={data}
+                  isGreatL={false}
+                  timeReductionCardNum={timeReductionCardNumBaby}
+                  onSuccess={() => delayRefresh()}
+                  onError={() => delayRefresh()}
+                />
+              ))}
+              {!greatLoongFarmingDataList.length &&
+                !babyLoongFarmingDataList.length && (
+                  <div className='flex h-[360px] w-[100%] items-center justify-center text-xl text-white'>
+                    You don&apos;t have an explorer loong yet.
+                  </div>
+                )}
+            </>
+          ) : (
+            <>
+              {[1, 2, 3, 4, 5].map((i) => (
+                <LoongImageSkeleton key={i} />
+              ))}
+            </>
+          )}
         </div>
       </div>
     </div>

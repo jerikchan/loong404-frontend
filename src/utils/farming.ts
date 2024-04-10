@@ -35,7 +35,7 @@ export const loongApproveFarming = async (
   isGreatL: boolean
 ) => {
   const contract = await getLoongContract(isGreatL, walletProvider);
-  const tx = await contract.approve(
+  const tx: ethers.ContractTransactionResponse = await contract.approve(
     chain.contract.farmingDataStrongAddr,
     ethers.parseUnits(id, 'wei')
   );
@@ -48,8 +48,10 @@ export const loongFarming = async (
   isGreatL: boolean
 ) => {
   const contract = await getLoongFarmingContract(isGreatL, walletProvider);
-  const result = await contract.dragonFraming(ethers.parseUnits(id, 'wei'));
-  return result;
+  const tx: ethers.ContractTransactionResponse = await contract.dragonFraming(
+    ethers.parseUnits(id, 'wei')
+  );
+  await tx.wait();
 };
 
 export const getUserLoongFarmingList = async (
@@ -76,10 +78,10 @@ export const getLoongFarmingResult = async (
   isGreatL: boolean
 ) => {
   const contract = await getLoongFarmingContract(isGreatL, walletProvider);
-  const tx = <ethers.TransactionResponse>(
+  const tx = <ethers.ContractTransactionResponse>(
     await contract.getDragonFarmingResult(ethers.parseUnits(id, 'wei'))
   );
-  const receipt = <ethers.TransactionReceipt>await tx.wait();
+  const receipt = <ethers.ContractTransactionReceipt>await tx.wait();
   const data = <[bigint, bigint, bigint, bigint]>(
     (<ethers.EventLog>receipt.logs.at(-1)).args.toArray()
   );
@@ -149,12 +151,9 @@ export const extractFarmingTokenAmount = async (
   isGreatL: boolean
 ) => {
   const contract = await getLoongFarmingContract(isGreatL, walletProvider);
-  const wei = ethers.parseUnits(String(amount), 'wei');
-  debugger;
-  // const wei = ethers.parseUnits(String(amount), 'ether');
-  await contract.extractFarmingTokenAmount(wei);
-  // await contract.extractFarmingTokenAmount(amount);
-  // await contract.extractFarmingTokenAmount(String(amount));
+  await contract.extractFarmingTokenAmount(
+    ethers.parseUnits(String(amount), 'wei')
+  );
 };
 
 export const getFarmingTokenAmount = async (
@@ -204,5 +203,7 @@ export const extractFarmingEthAmount = async (
   walletProvider: Eip1193Provider
 ) => {
   const contract = await getLoongFarmingContract(true, walletProvider);
-  await contract.extractFarmingEthAmount();
+  const tx: ethers.ContractTransactionResponse =
+    await contract.extractFarmingEthAmount();
+  await tx.wait();
 };

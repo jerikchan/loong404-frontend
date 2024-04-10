@@ -77,17 +77,24 @@ export const getBabyLoongImageData = createGetLoongImageData(
   process.env.NEXT_PUBLIC_BABY_LOONG_IMAGE_CID
 );
 
-function createGetLoongImageUrl(cid: string) {
-  return (image: string) =>
-    resolve(getIPFSPrefixUrl(), image.replace('ipfs://', ''));
+function createGetLoongImageUrl() {
+  return async (image: string, sync?: boolean) => {
+    const url = resolve(getIPFSPrefixUrl(), image.replace('ipfs://', ''));
+    if (sync) return url;
+
+    let _resolve: (value: string) => void;
+    const promise = new Promise<string>((resolve) => (_resolve = resolve));
+    const img = new Image();
+    img.src = url;
+    img.onload = () => {
+      _resolve(url);
+    };
+    return promise;
+  };
 }
 
-export const getGreatLoongImageUrl = createGetLoongImageUrl(
-  process.env.NEXT_PUBLIC_GREAT_LOONG_IMAGE_CID
-);
-export const getBabyLoongImageUrl = createGetLoongImageUrl(
-  process.env.NEXT_PUBLIC_BABY_LOONG_IMAGE_CID
-);
+export const getGreatLoongImageUrl = createGetLoongImageUrl();
+export const getBabyLoongImageUrl = createGetLoongImageUrl();
 
 export function weiToDate(wei: bigint) {
   return new Date(Number(ethers.formatUnits(wei, 'wei')) * 1000);
