@@ -26,9 +26,9 @@ import TreasureImage from '@/assets/treasure/image.png';
 import TreasureImage2 from '@/assets/treasure/image2.png';
 import TreasureImage3 from '@/assets/treasure/image3.png';
 import TreasureImage4 from '@/assets/treasure/image4.png';
-import TreasureImage5 from '@/assets/treasure/image5.png';
 import TreasureImage6 from '@/assets/treasure/image6.png';
-import TreasureImage7 from '@/assets/treasure/image7.png';
+import TreasureImageCard from '@/assets/treasure/image_card.png';
+import TreasureImageCard2 from '@/assets/treasure/image_card2.png';
 
 import { message } from 'antd';
 import { extractReason } from '@/utils';
@@ -531,13 +531,13 @@ export default function Page() {
             name='Sleep Time Reduction Card[3 Days]'
             desc='(for Great Loong)'
             num={timeReductionCardNumGreat}
-            image={TreasureImage5}
+            image={TreasureImageCard}
           />
           <BlindBox
             name='Sleep Time Reduction Card[3 Days]'
             desc='(for Baby Loong)'
             num={timeReductionCardNumBaby}
-            image={TreasureImage7}
+            image={TreasureImageCard2}
           />
           {/* <div className="flex items-center justify-center w-[100%] h-[360px] text-white text-xl">You don't have any items yet.</div> */}
         </div>
