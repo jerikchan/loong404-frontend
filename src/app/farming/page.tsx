@@ -480,9 +480,18 @@ export default function Page() {
   const loading = useSelector(({ loading }: { loading: boolean }) => loading);
   const [timeReductionCardNumGreat, setTimeReductionCardNumGreat] = useState(0);
   const [timeReductionCardNumBaby, setTimeReductionCardNumBaby] = useState(0);
-  const [loadingLoongIds, setLoadingLoongIds] = useState(true);
+  const [loadingLoongIds, setLoadingLoongIds] = useState(false);
   const [loadingLoongFarmingDataList, setLoadingLoongFarmingDataList] =
-    useState(true);
+    useState(false);
+
+  useEffect(() => {
+    if (walletProvider) return;
+    debugger;
+    setGreatLoongIds([]);
+    setBabyLoongIds([]);
+    setGreatLoongFarmingDataList([]);
+    setBabyLoongFarmingDataList([]);
+  }, [walletProvider]);
 
   useEffect(() => {
     const fetchTimeReductionCardNum = async () => {
