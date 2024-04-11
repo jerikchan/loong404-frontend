@@ -495,13 +495,16 @@ export default function Page() {
   useEffect(() => {
     const fetchTimeReductionCardNum = async () => {
       if (!walletProvider) return;
-      // 不分大小龙，随便取一个，取大龙的
-      const [numGreat, numBaby] = await Promise.all([
-        getTimeReductionCardNum(walletProvider, true),
-        getTimeReductionCardNum(walletProvider, false),
-      ]);
-      setTimeReductionCardNumGreat(numGreat);
-      setTimeReductionCardNumBaby(numBaby);
+      try {
+        const [numGreat, numBaby] = await Promise.all([
+          getTimeReductionCardNum(walletProvider, true),
+          getTimeReductionCardNum(walletProvider, false),
+        ]);
+        setTimeReductionCardNumGreat(numGreat);
+        setTimeReductionCardNumBaby(numBaby);
+      } catch (e) {
+        console.error(e);
+      }
     };
     fetchTimeReductionCardNum();
   }, [walletProvider, refresh]);
@@ -510,15 +513,20 @@ export default function Page() {
     const fetchLoongList = async () => {
       if (!walletProvider) return;
       setLoadingLoongIds(true);
-      const [greatLoongIds, babyLoongIds] = await Promise.all([
-        getUserLoongList(walletProvider, true),
-        getUserLoongList(walletProvider, false),
-      ]);
-      console.log('greatLoongIds:', greatLoongIds);
-      console.log('babyLoongIds:', babyLoongIds);
-      setGreatLoongIds(greatLoongIds);
-      setBabyLoongIds(babyLoongIds);
-      setLoadingLoongIds(false);
+      try {
+        const [greatLoongIds, babyLoongIds] = await Promise.all([
+          getUserLoongList(walletProvider, true),
+          getUserLoongList(walletProvider, false),
+        ]);
+        console.log('greatLoongIds:', greatLoongIds);
+        console.log('babyLoongIds:', babyLoongIds);
+        setGreatLoongIds(greatLoongIds);
+        setBabyLoongIds(babyLoongIds);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoadingLoongIds(false);
+      }
     };
 
     fetchLoongList();
@@ -528,20 +536,25 @@ export default function Page() {
     const fetchLoongFarmingList = async () => {
       if (!walletProvider) return;
       setLoadingLoongFarmingDataList(true);
-      const [greatLoongFarmingDataList, babyLoongFarmingDataList] =
-        await Promise.all([
-          getUserLoongFarmingList(walletProvider, true),
-          getUserLoongFarmingList(walletProvider, false),
-        ]);
-      console.log('greatLoongFarmingDataList:', greatLoongFarmingDataList);
-      console.log('babyLoongFarmingDataList:', babyLoongFarmingDataList);
-      setGreatLoongFarmingDataList(
-        greatLoongFarmingDataList.filter((item) => item.id !== '0')
-      );
-      setBabyLoongFarmingDataList(
-        babyLoongFarmingDataList.filter((item) => item.id !== '0')
-      );
-      setLoadingLoongFarmingDataList(false);
+      try {
+        const [greatLoongFarmingDataList, babyLoongFarmingDataList] =
+          await Promise.all([
+            getUserLoongFarmingList(walletProvider, true),
+            getUserLoongFarmingList(walletProvider, false),
+          ]);
+        console.log('greatLoongFarmingDataList:', greatLoongFarmingDataList);
+        console.log('babyLoongFarmingDataList:', babyLoongFarmingDataList);
+        setGreatLoongFarmingDataList(
+          greatLoongFarmingDataList.filter((item) => item.id !== '0')
+        );
+        setBabyLoongFarmingDataList(
+          babyLoongFarmingDataList.filter((item) => item.id !== '0')
+        );
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoadingLoongFarmingDataList(false);
+      }
     };
 
     fetchLoongFarmingList();
