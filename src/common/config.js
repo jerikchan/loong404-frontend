@@ -64,9 +64,9 @@ export const Arbitrum_One = {
     babyLMintAddr: '0x3e28782b382F8d0AA33192e1C68cA9eabDA16f1E',
     swapAddress: '0xBc4B1e8caC87872AA6970f4d396C778CAE4F4C1F',
     dataAddress: '0xc2f9B5ec0CCbB4A0EDD2508Dec4d573a3D413a33',
-    greatLFarmingAddr: '',
-    babyLFarmingAddr: '',
-    farmingDataStrongAddr: '',
+    greatLFarmingAddr: '0xEd1126d289EAEd3B2402e3AD98c5fE225141EF06',
+    babyLFarmingAddr: '0x3AeFCE5B83FeE09239960e326B1a986fA41D36d7',
+    farmingDataStrongAddr: '0xc2624aa4C9a59D640f246502f8CF16cA3B150ca5',
   },
 };
 

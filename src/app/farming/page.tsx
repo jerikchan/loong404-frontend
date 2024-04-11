@@ -486,7 +486,6 @@ export default function Page() {
 
   useEffect(() => {
     if (walletProvider) return;
-    debugger;
     setGreatLoongIds([]);
     setBabyLoongIds([]);
     setGreatLoongFarmingDataList([]);
