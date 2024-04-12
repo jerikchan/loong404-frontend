@@ -15,6 +15,7 @@ import {
 import { IUsage } from '@/types';
 import { getNftIds } from '@/utils/web3';
 import styled from 'styled-components';
+import { insertCombinedMessages } from '@/utils/common';
 
 const BgContainer = styled.div`
   background-image: url(${LoongBg.src});
@@ -227,20 +228,24 @@ export function Chat(props: ChatProps) {
         helloMessage={helloMessage}
         request={async (messages) => {
           const date = new Date();
-          const systemMessages: ChatMessage[] = [
+          const combinedMessages: ChatMessage[] = [];
+          insertCombinedMessages(combinedMessages, [
             {
               content: `今天的日期是${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`,
-              id: nanoid(),
+              id: nanoid(8),
               createAt: date.getTime(),
               updateAt: date.getTime(),
-              role: 'system',
+              role: 'assistant',
+              extra: { fromModel: 'gpt-3.5-turbo' },
             },
-          ];
+          ]);
+          insertCombinedMessages(combinedMessages, messages);
+
           try {
             const response = await fetch('/api/openai', {
               method: 'POST',
               body: JSON.stringify({
-                messages: systemMessages.concat(messages),
+                messages: combinedMessages,
                 userId: userId,
               }),
             });

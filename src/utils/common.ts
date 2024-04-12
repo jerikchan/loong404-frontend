@@ -4,6 +4,7 @@ import BabyLFarmingABI from './abi/BabyLFarming.json';
 import GreatLoongABI from './abi/GreatL.json';
 import BabyLoongABI from './abi/BabyL.json';
 import { ethers } from 'ethers';
+import { type ChatMessage } from '@ant-design/pro-chat';
 
 const {
   greatLFarmingAddr,
@@ -54,4 +55,18 @@ export async function getLoongContract(
     signer
   );
   return contract;
+}
+
+export function insertCombinedMessages(
+  combinedMessages: ChatMessage[],
+  messages: ChatMessage[]
+) {
+  // keep context
+  const lastPresetMessage = combinedMessages.at(-1);
+  if (lastPresetMessage) {
+    const message = messages[0];
+    message.parentId = lastPresetMessage.id;
+  }
+  combinedMessages.push(...messages);
+  return combinedMessages;
 }
