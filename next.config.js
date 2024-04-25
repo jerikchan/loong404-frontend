@@ -4,14 +4,6 @@ const webpack = require('webpack');
 const nextConfig = {
   images: {
     unoptimized: true,
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'ipfs.io',
-        port: '',
-        pathname: '/ipfs/**',
-      },
-    ],
   },
   transpilePackages: [
     '@ant-design/pro-editor',

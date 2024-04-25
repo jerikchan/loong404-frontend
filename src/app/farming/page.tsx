@@ -37,14 +37,8 @@ import { saveLoading } from '@/store/reducer';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 import Link from 'next/link';
-
-function Skeleton({ className }: { className?: string }) {
-  return (
-    <div
-      className={`animate-pulse rounded-xl [background-color:hsl(240_4.8%_95.9%)] ${className}`}
-    ></div>
-  );
-}
+import { Skeleton } from '@/components/ui/Skeleton';
+import { LazyImage } from '@/components/ui/LazyImage';
 
 function LoongImage({
   id,
@@ -56,9 +50,9 @@ function LoongImage({
   onSuccess?: () => void;
 }) {
   const { walletProvider } = useWeb3ModalProvider();
-  const [data, setData] = useState<ILoongImageData | null>(null);
+  // const [data, setData] = useState<ILoongImageData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [url, setUrl] = useState<string>('');
+  // const [url, setUrl] = useState<string>('');
 
   const doFarming = async () => {
     if (!walletProvider) return;
@@ -90,37 +84,37 @@ function LoongImage({
     }
   };
 
-  const getLoongImageData = isGreatL
-    ? getGreatLoongImageData
-    : getBabyLoongImageData;
-  const getLoongImageUrl = isGreatL
-    ? getGreatLoongImageUrl
-    : getBabyLoongImageUrl;
+  // const getLoongImageData = isGreatL
+  //   ? getGreatLoongImageData
+  //   : getBabyLoongImageData;
+  // const getLoongImageUrl = isGreatL
+  //   ? getGreatLoongImageUrl
+  //   : getBabyLoongImageUrl;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getLoongImageData(id);
-      setData(data);
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const data = await getLoongImageData(id);
+  //     setData(data);
+  //   };
 
-    fetchData();
-  }, [getLoongImageData, id]);
+  //   fetchData();
+  // }, [getLoongImageData, id]);
 
-  useEffect(() => {
-    const doGetLoongImageUrl = async () => {
-      if (!data) return;
-      const url = await getLoongImageUrl(data.image);
-      setUrl(url);
-    };
-    doGetLoongImageUrl();
-  }, [data, getLoongImageUrl]);
+  // useEffect(() => {
+  //   const doGetLoongImageUrl = async () => {
+  //     if (!data) return;
+  //     const url = await getLoongImageUrl(data.image);
+  //     setUrl(url);
+  //   };
+  //   doGetLoongImageUrl();
+  // }, [data, getLoongImageUrl]);
 
   return (
     <>
-      {data && (
+      {
         <div className='shrink-0 space-y-3 pb-8'>
           <div className='overflow-hidden rounded-md'>
-            {url ? (
+            {/* {data && url ? (
               <Image
                 src={url}
                 width={256}
@@ -130,10 +124,13 @@ function LoongImage({
               />
             ) : (
               <Skeleton className='h-[256px] w-[256px]' />
-            )}
+            )} */}
+            <LazyImage src={`/ipfs/${isGreatL ? 'great' : 'baby'}/${id}`} />
           </div>
           <div className='space-y-2 text-sm'>
-            <div className='text-center text-xs leading-none'>{data.name}</div>
+            <div className='text-center text-xs leading-none'>
+              {isGreatL ? `Great Loong ${id}` : `Baby Loong ${id}`}
+            </div>
             <button
               onClick={() => setIsModalOpen(true)}
               className='mx-auto block rounded-lg bg-[#ebe0cc] px-12 py-2 text-base font-bold text-[#0a0a0b]'
@@ -162,7 +159,7 @@ function LoongImage({
             </div>
           </Modal>
         </div>
-      )}
+      }
     </>
   );
 }
@@ -197,13 +194,13 @@ function LoongFarmingImage({
   timeReductionCardNum: number;
 }) {
   const { walletProvider } = useWeb3ModalProvider();
-  const [imageData, setImageData] = useState<ILoongImageData | null>(null);
+  // const [imageData, setImageData] = useState<ILoongImageData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [farmingResult, setFarmingResult] =
     useState<ILoongFarmingResult | null>(null);
   const [farmingCountdownMs, setFarmingCountdownMs] = useState(0);
   const [sleepCountdownMs, setSleepCountdownMs] = useState(0);
-  const [url, setUrl] = useState('');
+  // const [url, setUrl] = useState('');
 
   const doFarmingAgain = async () => {
     if (!walletProvider) return;
@@ -287,30 +284,30 @@ function LoongFarmingImage({
     }
   };
 
-  const getLoongImageData = isGreatL
-    ? getGreatLoongImageData
-    : getBabyLoongImageData;
-  const getLoongImageUrl = isGreatL
-    ? getGreatLoongImageUrl
-    : getBabyLoongImageUrl;
+  // const getLoongImageData = isGreatL
+  //   ? getGreatLoongImageData
+  //   : getBabyLoongImageData;
+  // const getLoongImageUrl = isGreatL
+  //   ? getGreatLoongImageUrl
+  //   : getBabyLoongImageUrl;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const imageData = await getLoongImageData(data.id);
-      setImageData(imageData);
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const imageData = await getLoongImageData(data.id);
+  //     setImageData(imageData);
+  //   };
 
-    fetchData();
-  }, [getLoongImageData, data]);
+  //   fetchData();
+  // }, [getLoongImageData, data]);
 
-  useEffect(() => {
-    const doGetLoongImageUrl = async () => {
-      if (!imageData) return;
-      const url = await getLoongImageUrl(imageData.image);
-      setUrl(url);
-    };
-    doGetLoongImageUrl();
-  }, [imageData, getLoongImageUrl]);
+  // useEffect(() => {
+  //   const doGetLoongImageUrl = async () => {
+  //     if (!imageData) return;
+  //     const url = await getLoongImageUrl(imageData.image);
+  //     setUrl(url);
+  //   };
+  //   doGetLoongImageUrl();
+  // }, [imageData, getLoongImageUrl]);
 
   let resultMessage = 'loading...';
   if (farmingResult) {
@@ -372,10 +369,10 @@ function LoongFarmingImage({
 
   return (
     <div className='shrink-0 space-y-3 pb-8'>
-      {data && imageData && (
+      {data && (
         <>
           <div className='overflow-hidden rounded-md'>
-            {url ? (
+            {/* {(imageData && url) ? (
               <Image
                 src={url}
                 width={256}
@@ -385,11 +382,14 @@ function LoongFarmingImage({
               />
             ) : (
               <Skeleton className='h-[256px] w-[256px]' />
-            )}
+            )} */}
+            <LazyImage
+              src={`/ipfs/${isGreatL ? 'great' : 'baby'}/${data.id}`}
+            />
           </div>
           <div className='space-y-2 text-sm'>
             <div className='text-center text-xs leading-none'>
-              {imageData.name}
+              {isGreatL ? `Great Loong ${data.id}` : `Baby Loong ${data.id}`}
             </div>
             {data.farmingStatus && isFarming && (
               <div className='flex h-[40px] items-center justify-center text-center text-xs leading-none'>

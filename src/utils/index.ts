@@ -77,19 +77,21 @@ export const getBabyLoongImageData = createGetLoongImageData(
   process.env.NEXT_PUBLIC_BABY_LOONG_IMAGE_CID
 );
 
+export function loadImage(url: string) {
+  return new Promise<string>((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(url);
+    img.onerror = reject;
+    img.src = url;
+  });
+}
+
 function createGetLoongImageUrl() {
   return async (image: string, sync?: boolean) => {
     const url = resolve(getIPFSPrefixUrl(), image.replace('ipfs://', ''));
     if (sync) return url;
 
-    let _resolve: (value: string) => void;
-    const promise = new Promise<string>((resolve) => (_resolve = resolve));
-    const img = new Image();
-    img.src = url;
-    img.onload = () => {
-      _resolve(url);
-    };
-    return promise;
+    return loadImage(url);
   };
 }
 
